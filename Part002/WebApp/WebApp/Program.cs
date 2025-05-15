@@ -1,4 +1,10 @@
+using Microsoft.EntityFrameworkCore;
+using WebApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<StoreContext>(p => p.UseSqlServer(builder.Configuration.GetConnectionString("Store")));
+builder.Services.AddScoped<StudentRepository>();
 
 // Add services to the container.
 builder.Services.AddMvc();
