@@ -24,13 +24,39 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Add(Student obj) 
         {
-            int ret = repository.Add(obj);
+            return Redirect(repository.Edit(obj));
+        }
+
+        public IActionResult Delete(int id) 
+        {
+           int ret = repository.Delete(id);
+            if (ret > 0)
+            {
+                return Redirect("/student");
+            }
+            return View("/student/error");
+
+        }
+
+        public IActionResult Edit(int id)
+        {
+            return View(repository.GetStudent(id));
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Student obj)
+        {
+            return Redirect(repository.Edit(obj));
+        }
+
+        public IActionResult Redirect(int ret)
+        {
             if (ret > 0)
             {
                 return Redirect("/student");
             }
             ModelState.AddModelError("Error", "insert student fail");
-            return View(obj);
+            return Redirect("/student/error");
         }
     }
 }

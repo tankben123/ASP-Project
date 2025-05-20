@@ -1,0 +1,30 @@
+﻿@model Student
+<form method="post">
+    <div>
+        <label>Full Name</label>
+        <input type="text" name="FullName" value="@Model.Fullname"></input>
+    </div>
+    <div>
+        <label>Email</label>
+        <input type="text" name="Email" value="@Model.Email"></input>
+    </div>
+    <div>
+        <label>Date Of Birth</label>
+        <input type="date" name="DateOfBirth" value="@Model.DateOfBirth.ToString("yyyy-MM-dd")"></input>
+    </div>
+    <div>
+        <label>Gender</label>
+        <select name="Gender" >
+            <option value="0">Male</option>
+            @if (Model.Gender)
+            {
+                <option value="1" selected>FeMale</option>
+            }
+            else
+            {
+                <option value="1">FeMale</option>
+            }
+        </select>
+    </div>
+    <button>Save Changes</button>
+</form>
