@@ -1,29 +1,48 @@
 ﻿@model List<WebApp.Models.Student>
 <a href="/student/add">Add student</a>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>FullName</th>
-            <th>Gender</th>
-            <th>Date Of Birth</th>
-            <th>Comand</th>
-        </tr>
-    </thead>
-    @foreach (WebApp.Models.Student item in Model)
-    {
-        <tr>
-            <td>@item.Id</td>
-            <td>@item.Fullname</td>
-            <td>@item.Email</td>
-            <td>@(item.Gender ? "FeMale" : "Male")</td>
-            <td>@item.DateOfBirth</td>
-            <td>
-                <a class="d" href="/student/delete/@item.Id">Delete</a>
-                <a href="/student/edit/@item.Id">Edit</a>
-            </td>
-        </tr>
-    }
-</table>
+<form action="/student.delall" method="post">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>
+                    <button>Delete</button>
+                </th>
+                <th>Id</th>
+                <th>FullName</th>
+                <th>Gender</th>
+                <th>Date Of Birth</th>
+                <th>Comand</th>
+            </tr>
+        </thead>
+        @foreach (WebApp.Models.Student item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" name="ids" value="@item.Id"></input>
+                </td>
+                <td>@item.Id</td>
+                <td>@item.Fullname</td>
+                <td>@item.Email</td>
+                <td>@(item.Gender ? "FeMale" : "Male")</td>
+                <td>@item.DateOfBirth</td>
+                <td>
+                    <a class="d" href="/student/delete/@item.Id">Delete</a>
+                    <a href="/student/edit/@item.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </table>
+</form>
+
+@section Scripts
+{
+    <script>
+        $('.d').click(() => {
+            //console.log(this);
+            return confirm("bạn có muốn xóa không");
+        })
+    </script>
+
+}
 
 
