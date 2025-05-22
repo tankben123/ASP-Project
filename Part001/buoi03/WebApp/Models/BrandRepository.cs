@@ -1,11 +1,9 @@
 ﻿namespace WebApp.Models
 {
-    public class BrandRepository
+    public class BrandRepository:BaseRepository
     {
-        StoreContext context;
-        public BrandRepository(StoreContext context)
+        public BrandRepository(StoreContext context):base(context)
         {
-            this.context = context;
         }
 
         public List<Brand> GetBrands()

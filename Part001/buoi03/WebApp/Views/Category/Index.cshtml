@@ -1,0 +1,26 @@
+﻿@model List<Category>
+<form method="post" action="/category/add">
+    <div>
+        <label>Name</label>
+        <input type="text" name="name"></input>
+    </div>
+    <button>Save changes</button>
+</form>
+<table class="table table-bordered">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
