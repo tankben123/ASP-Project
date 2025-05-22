@@ -40,5 +40,16 @@
         {
             return context.Students.Find(id);
         }
+
+        public int Delete(int[] ids)
+        {
+            foreach (var id in ids)
+            {
+                var student = context.Students.Find(id);
+                if (student != null)
+                    context.Students.Remove(student);
+            }
+            return context.SaveChanges();
+        }
     }
 }

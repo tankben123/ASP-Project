@@ -51,12 +51,23 @@ namespace WebApp.Controllers
 
         public IActionResult Redirect(int ret)
         {
-            if (ret > 0)
+            if (ret >= 0)
             {
                 return Redirect("/student");
             }
             ModelState.AddModelError("Error", "insert student fail");
             return Redirect("/student/error");
         }
+
+        [HttpPost]
+        public IActionResult DelAll(int[] ids)
+        {
+            if (repository.Delete(ids) >= 0) 
+            {
+                return Redirect("/student");
+            }
+            return View("/student/error");
+        }
+
     }
 }
