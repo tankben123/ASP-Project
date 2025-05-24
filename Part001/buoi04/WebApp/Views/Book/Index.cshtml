@@ -1,0 +1,21 @@
+﻿@model List<Book>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Image</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Title</td>
+                <td>@item.ImageUrl</td>
+            </tr>
+        }
+    </tbody>
+</table>  
