@@ -1,16 +1,10 @@
 ﻿@model List<Book>
-<ul class="pagination">
-    @for (int i = ViewBag.left; i <= ViewBag.right; i++)
-    {
-        <li class="page-item"><a class="page-link" href="/book/index/@i">@i</a></li>
-    }
-</ul>
 <form action="/book/search">
     <input type="search" name="q"></input>
     <button>Search</button>
 </form>
-<table> 
-    <thead>
+<table class="table table-bordered">
+    <thead class="table-dark">
         <tr>
             <th>Id</th>
             <th>Title</th>
@@ -27,6 +21,6 @@
                     <img src="@item.ImageUrl" @item.Title width="150"></img>
                 </td>
             </tr>
-        }
+        } 
     </tbody>
 </table>  
