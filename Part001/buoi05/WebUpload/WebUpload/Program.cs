@@ -1,7 +1,13 @@
+using Microsoft.EntityFrameworkCore;
+using WebUpload.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMvc();
+
+builder.Services.AddDbContext<StoreContext>(p => p.UseSqlServer(builder.Configuration.GetConnectionString("Store")));
+builder.Services.AddScoped<ImageRepository>();
 
 var app = builder.Build();
 

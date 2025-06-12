@@ -1,1 +1,32 @@
-﻿<a href="/upload/add">Add</a>
+﻿@model List<Image>
+<a href="/upload/add">Add</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Original Name</th>
+            <th>Image</th>
+            <th>Length</th>
+            <th>Type</th>
+            <th>Detail</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Url</td>
+                <td>@item.OriginalName</td>
+                <td>
+                    <img src="/images/@item.Url" alt="@item.OriginalName"/>
+                </td>
+                <td>@item.Size</td>
+                <td>@item.Type</td>
+                <td>
+                    <a href="/upload/details/@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

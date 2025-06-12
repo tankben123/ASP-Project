@@ -1,0 +1,14 @@
+﻿@model Image
+
+<p>Id: @Model.Id</p>
+<p>
+    <img src="/images/@Model.Url" width="500" alt="@Model.OriginalName"></img>
+</p>
+
+<form method="post" action="/upload/download">
+    <input type="hidden" name="id" value="@Model.Id" />
+    <button>Download Image</button>
+</form>
+
+<p>Length: @Model.Size</p>
+<p>Type: @Model.Type</p>
