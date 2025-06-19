@@ -1,0 +1,1 @@
+Giới thiệu về cơ chế DI, và dispose, cách viết gọn tránh khởi tạo dbcontext,.... do việc gọi controller sau mỗi request
