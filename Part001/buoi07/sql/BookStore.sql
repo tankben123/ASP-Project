@@ -16,7 +16,7 @@ set identity_insert Category off
 
 
 create table Attribute(
-	AttributeId smallint not null primary key,
+	AttributeId smallint not null primary key identity(1, 1),
 	AttributeName varchar(32) not null,
 	AttributeNameVI nvarchar(64) not null
 )
@@ -39,8 +39,8 @@ Create table Product
 
 create table Specification( 
 	ProductId int not null,
-	AttributeId smallint not null,
-	AttributeValue nvarchar(32) not null,
+	AttributeId int not null,
+	AttributeValue nvarchar(32) null,
 	primary key(ProductId, AttributeId)
 )
 

@@ -18,14 +18,14 @@ Dictionary<string, APPCRAWLER.Attribute> dict = new Dictionary<string, APPCRAWLE
 string[] producer = items[0].InnerText.Split(" - ");
 
 
-string key = producer[0];
+string key = producer[0].Trim();
 
-if (dict.ContainsKey(key))
+if (!dict.ContainsKey(key))
 {
     var obj = new APPCRAWLER.Attribute()
     {
-        Name = producer[0],
-        NameVI = producer[1],
+        Name = producer[0].Trim(),
+        NameVI = producer[1].Trim(),
     };
 
     AttributeRepository.Add(obj);
@@ -39,28 +39,30 @@ int productId = random.Next();
 list.Add(new Specification()
 {
     ProductId = productId,
-    AttributeId = dict[producer[0]].Id
+    AttributeId = dict[key].Id,
+    Value = items[1].InnerText.Trim()
 });
 
 string[] author = items[2].InnerText.Split(" - ");
 
-key = author[1];
-if (dict.ContainsKey(key))
+key = author[1].Trim();
+if (!dict.ContainsKey(key))
 {
     var obj = new APPCRAWLER.Attribute()
     {
-        Name = author[1],
-        NameVI = author[0]
+        Name = author[1].Trim(),
+        NameVI = author[0].Trim()
     };
 
-    AttributeRepository.Add(dict[author[1]]);
+    AttributeRepository.Add(obj);
     dict[key] = obj;
 }    
 
 list.Add(new Specification()
 {
     ProductId = productId,
-    AttributeId = dict[author[1]].Id
+    AttributeId = dict[key].Id,
+    Value =  items[3].InnerText.Trim()
 });
 
 string price = items[5].InnerText.Trim().Replace("$", "");
@@ -84,7 +86,6 @@ for (int i = 0; i < n; i++)
 {
     //phan tieu de
     string[] arr = specifications[2 * i].InnerText.Split(" - ");
-
     key = arr[arr.Length - 1].Trim();
 
     if (key == "ISBN")
@@ -93,12 +94,12 @@ for (int i = 0; i < n; i++)
     }
     else
     {
-        if (dict.ContainsKey(key))
+        if (!dict.ContainsKey(key))
         {
             var obj = new APPCRAWLER.Attribute()
             {
                 Name = key,
-                NameVI = arr[0]
+                NameVI = arr[0].Trim()
             };
             AttributeRepository.Add(obj);
             dict[key] = obj;
@@ -116,5 +117,6 @@ for (int i = 0; i < n; i++)
     //specifications[2 * i + 1].InnerText.Trim();
 }
 ProductRepository.Add(product);
+SpecificationRepository.Add(list);
 
 //dang toi phut 39

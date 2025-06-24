@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace APPCRAWLER
 {
-    public class AttributeRepository
+    public class SpecificationRepository
     {
-        public static int Add(Attribute obj)
+        public static int Add(List<Specification> obj)
         {
             using (BookStoreContext context = new BookStoreContext())
             {
-                context.Attributes.Add(obj);
+                context.Specifications.AddRange(obj);
                 return context.SaveChanges();
             }
         }
