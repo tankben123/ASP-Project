@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DAL
 {
-    public class BookStoreContext: DbContext
+    public class BookStoreContext : DbContext
     {
         string connectionString = "Server=172.168.5.160,10100;Database=BookStore;User Id=fa11;Password=Toan@2023";
         public BookStoreContext(string connectionString) : base()
@@ -25,6 +25,12 @@ namespace DAL
             base.OnConfiguring(optionsBuilder);
 
             optionsBuilder.UseSqlServer(connectionString);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Specification>().HasKey(s => new { s.ProductId, s.AttributeId });
         }
     }
 }

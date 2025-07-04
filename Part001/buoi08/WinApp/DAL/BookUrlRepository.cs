@@ -17,5 +17,10 @@ namespace DAL
             context.BookUrls.AddRange(list);
             return context.SaveChanges();
         }
+
+        public List<BookUrl> GetBookUrls()
+        {
+            return context.BookUrls.ToList();
+        }
     }
 }

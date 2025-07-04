@@ -10,12 +10,45 @@ namespace DAL
     {
 
         BookUrlRepository bookUrl;
+        AttributeRepository attribute;
+        ProductRepository product;
+        SpecificationRepository specification;
         BookStoreContext context;
 
         public SiteProvider(BookStoreContext context)
         {
             this.context = context;
-            this.bookUrl = bookUrl;
+        }
+
+
+        public AttributeRepository Attribute 
+        {   
+            get
+            {
+                if(attribute is null)
+                    attribute = new AttributeRepository(context);
+                return attribute;
+            }
+        }
+
+        public ProductRepository Product 
+        { 
+            get
+            {
+                if(product is null)
+                    product = new ProductRepository(context);
+                return product;
+            }
+        }
+
+        public SpecificationRepository Specification 
+        { 
+            get
+            {
+                if(specification is null)
+                    specification = new SpecificationRepository(context);
+                return specification;
+            }
         }
 
         public BookUrlRepository BookUrl 
