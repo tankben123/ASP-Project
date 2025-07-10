@@ -1,6 +1,10 @@
-﻿<ul>
-    <li><a href="/auth/login"> Log In</a></li>
-    <li><a href="/auth/register">Register</a></li>
-    <li><a href="/auth/logout">Log Out</a></li>
-    <li><a href="/dashboard/user">Manage User</a></li>
-</ul>
+﻿@using System.Security.Claims
+<p>Wellcome: @User.Identity?.Name</p>
+<p>Email: @User.FindFirstValue(ClaimTypes.Email)</p>
+<p>Email: @User.FindFirstValue(ClaimTypes.NameIdentifier)</p>
+
+<h2>Information</h2>
+@foreach (var item in User.Claims)
+{
+    <p>@item.Type: @item.Value</p>    
+}

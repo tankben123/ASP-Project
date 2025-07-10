@@ -40,13 +40,15 @@ app.UseStaticFiles();
 
 app.MapStaticAssets();
 
+app.MapDefaultControllerRoute();
+
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Auth}/{action=Index}/{id?}")
+    name: "dashboard",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 
 app.Run();
 
 
-//đang tới 36p:06s
+//đang tới 5p:36s video 10 phần 1

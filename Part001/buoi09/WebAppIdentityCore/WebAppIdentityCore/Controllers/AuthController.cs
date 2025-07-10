@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebAppIdentityCore.Models;
@@ -46,6 +47,7 @@ namespace WebAppIdentityCore.Controllers
                 return View(obj);
         }
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();
@@ -55,6 +57,7 @@ namespace WebAppIdentityCore.Controllers
         {
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel obj)

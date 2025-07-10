@@ -8,5 +8,7 @@ namespace WebAppIdentityCore.Models
         public BookStoreContext(DbContextOptions options): base(options)
         {
         }
+
+        public DbSet<Contact> Contacts { get; set; } = null!;
     }
 }

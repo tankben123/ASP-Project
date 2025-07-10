@@ -40,5 +40,16 @@ namespace WebAppIdentityCore.Controllers
             }
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult Contact(LoginModel model)
+        {
+            return View();
+        }
+
+        public IActionResult Contact(Contact obj)
+        {
+            return View(obj);
+        }
     }
 }

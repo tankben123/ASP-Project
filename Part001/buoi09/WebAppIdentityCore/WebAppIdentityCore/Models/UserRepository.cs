@@ -24,7 +24,7 @@ namespace WebAppIdentityCore.Models
 
         public async Task<IdentityUser?> Login(LoginModel obj)
         {
-           var user = await manager.FindByNameAsync(obj.U);
+            var user = await manager.FindByNameAsync(obj.U);
             if (user != null)
             {
                 var result = await manager.CheckPasswordAsync(user, obj.P);
@@ -34,6 +34,11 @@ namespace WebAppIdentityCore.Models
                 }
             }
             return null;
+        }
+
+        public List<IdentityUser> GetUsers()
+        {
+            return manager.Users.ToList();
         }
     }
 }
