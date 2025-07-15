@@ -1,0 +1,11 @@
+﻿@model Forgot
+<div asp-validation-summary="All"></div>
+<form method="post">
+    <div>
+        <label asp-for="Email">Email</label>
+        <input type="email" asp-for="Email" placeholder="Please input your email"/>
+    </div>
+    <div>
+        <button>Send Email</button>
+    </div>
+</form>

@@ -1,0 +1,118 @@
+# PHÂN TÍCH DỰ ÁN & KẾ HOẠCH TRIỂN KHAI (GÓC NHÌN KỸ SƯ THIẾT KẾ & LẬP TRÌNH)
+
+---
+
+## I. PHÂN TÍCH DỰ ÁN
+
+### 1. Mục tiêu kỹ thuật
+- Xây dựng một nền tảng crawl dữ liệu TMĐT có thể mở rộng, tập trung vào eBay giai đoạn đầu
+- Cho phép người dùng nghiên cứu thị trường bằng các chỉ số: lượt bán, xu hướng, mức độ cạnh tranh
+- Hiển thị dữ liệu dễ hiểu thông qua dashboard và xuất báo cáo
+
+### 2. Kiến trúc hệ thống
+- Backend (REST API): ASP.NET Core 8
+- Module Crawler: sử dụng Selenium / PuppeteerSharp
+- Database: SQL Server (prod + dev)
+- Frontend: Blazor hoặc React
+- Scheduler: Hangfire / Quartz.NET
+- Proxy & CAPTCHA: tích hợp 2Captcha API + proxy rotation
+
+### 3. Yêu cầu mở rộng và bảo trì
+- Phân tách rõ từng layer: API / Service / Data
+- Cho phép dễ thêm crawler mới (Amazon, Etsy)
+- Có log chi tiết và export dữ liệu
+
+---
+
+## II. KẾ HOẠCH THỰC HIỆN
+
+### Giai đoạn 1: Chuẩn bị (1–2 ngày)
+- Tạo solution `.NET Core` với 3 project:
+  - WebApi (API Layer)
+  - Application (Business logic)
+  - Infrastructure (Data access, logging, proxy, CAPTCHA)
+- Cấu hình logging (Serilog)
+- Tạo file `config.json` chứa các thông số linh hoạt (delay, proxy list, api key...)
+
+---
+
+### Giai đoạn 2: Xây dựng Crawler (4–5 ngày)
+- Viết `EbayCrawlerService`
+- Viết `ProductParser`, `SellerParser`, `CaptchaDetector`
+- Crawl dữ liệu theo từ khóa: title, price, sold, image, seller
+- Cấu hình proxy rotation
+- Ghi log crawl vào `crawl_log`, lưu dữ liệu vào bảng `products`, `sellers`
+
+---
+
+### Giai đoạn 3: Xử lý CAPTCHA & chống bot (2–3 ngày)
+- Tạo class `CaptchaDetector` kiểm tra response CAPTCHA
+- Gửi CAPTCHA về frontend hiển thị ảnh hoặc gửi 2Captcha API
+- Tạo module `ProxyManager`: kiểm tra proxy sống, ghi lại IP
+- Áp dụng random user-agent, fake fingerprint (nếu dùng Puppeteer)
+
+---
+
+### Giai đoạn 4: Phân tích dữ liệu (2 ngày)
+- Viết class `ProductAnalyzer`:
+  - Tính `niche score`, `competition score`, `sold avg`
+- Viết unit test đảm bảo đúng logic
+- Cache kết quả tính toán (nếu cần)
+
+---
+
+### Giai đoạn 5: Giao diện dashboard (3–4 ngày)
+- Thiết kế layout chính: bảng sản phẩm, biểu đồ, bộ lọc
+- Viết các component: `ProductTable`, `ScoreChart`, `FilterPanel`
+- Gọi API từ backend
+- Tối ưu hiển thị dữ liệu lớn (phân trang, loading)
+
+---
+
+### Giai đoạn 6: Quản lý dữ liệu và xuất báo cáo (1.5 ngày)
+- Module export: dùng `CsvHelper` hoặc `ClosedXML`
+- Tạo bảng log: `proxy_log`, `captcha_log`, `session_log`
+- Tạo cronjob xóa dữ liệu cũ (Hangfire)
+
+---
+
+
+### Giai đoạn 6 (bổ sung): Tìm kiếm & Lọc thông tin (1.5–2 ngày)
+- Mục tiêu:
+  - Cho phép người dùng lọc sản phẩm theo từ khóa, giá, sold, seller, vị trí địa lý.
+  - Hỗ trợ lưu các bộ lọc thành “project nghiên cứu” tái sử dụng được.
+  - Phân trang dữ liệu lớn và truy vấn hiệu quả bằng LINQ/Dapper.
+
+- Công việc:
+  - Thiết kế bảng `filter_preset`: id, user_id, filter_json, created_at
+  - Index các cột thường truy vấn: title, price, sold, location
+  - Viết API:
+    - `GET /products?keyword=...&minPrice=...&maxSold=...`
+    - `POST /filters/save` – lưu bộ lọc
+    - `GET /filters/mine` – truy xuất bộ lọc đã lưu
+  - Tạo frontend component: `FilterPanel`, `SaveFilterDialog`, `FilterDropdown`
+
+- Công nghệ:
+  - LINQ hoặc stored procedure SQL Server
+  - EF Core hoặc Dapper
+  - ReactJS hoặc Blazor cho UI lọc
+
+- Lưu ý khi lập trình:
+  - Áp dụng phân trang server-side (skip/take)
+  - Validate kỹ input filter từ user
+  - Ghi log các bộ lọc được sử dụng nhiều để tối ưu sau này
+
+### Giai đoạn 7: Mở rộng và hoàn thiện (3 ngày)
+- Bổ sung crawler cho Amazon (reuse base class)
+- Cho phép thiết lập thời gian crawl định kỳ qua UI
+- Hiển thị thống kê CAPTCHA / proxy
+- Đảm bảo mã chạy được trên background và cấu hình bằng file
+
+---
+
+## III. KẾT LUẬN
+Với vai trò người thiết kế và lập trình chính:
+- Phải đảm bảo **module hóa tốt**: dễ mở rộng, dễ debug
+- **Log rõ ràng**, tránh xử lý "silent fail"
+- Tận dụng .NET Core để chia tầng rõ ràng (API / Service / Infra / Model)
+- Ưu tiên viết được các module có thể tái sử dụng cho crawler Amazon/Etsy sau này

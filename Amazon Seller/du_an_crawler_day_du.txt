@@ -1,0 +1,124 @@
+# TÊN DỰ ÁN:
+Xây dựng công cụ crawler phân tích thị trường thương mại điện tử giống ZIK Analytics / Helium10 bằng .NET Core
+
+# MỤC TIÊU:
+- Phân tích thị trường và tìm kiếm sản phẩm tiềm năng trên các sàn TMĐT như eBay (ưu tiên), Amazon, Etsy
+- Hỗ trợ seller dropshipping xác định sản phẩm bán chạy, theo dõi xu hướng, phân tích đối thủ
+- Tự động hóa quá trình thu thập và trực quan hóa dữ liệu
+
+# TÍNH NĂNG CHÍNH:
+
+## 1. CRAWLER THU THẬP DỮ LIỆU
+- Crawl dữ liệu sản phẩm theo từ khóa, danh mục, seller hoặc top trending
+- Crawl các trường:
+  - Tiêu đề, giá, giá gốc
+  - Số lượt bán (sold), số lượt xem (watching)
+  - Vị trí người bán, feedback seller
+  - Shipping, thời gian giao hàng, hình ảnh
+- Crawl từ các nguồn: eBay (ưu tiên), Amazon (giai đoạn sau), Etsy
+- Tùy chọn số lượng trang, độ trễ và thời gian quét định kỳ
+
+## 2. XỬ LÝ CAPTCHA
+- Tự động phát hiện khi bị CAPTCHA chặn (dựa vào HTML, response code)
+- Chuyển CAPTCHA về dạng ảnh gửi cho người dùng xử lý thủ công
+- Tích hợp dịch vụ giải CAPTCHA tự động (2Captcha, AntiCaptcha)
+- Ghi log các lần CAPTCHA để tối ưu lại tốc độ/cách crawl
+
+## 3. CHỐNG BOT DETECTION
+- Random User-Agent
+- IP rotation bằng proxy (danh sách proxy tự động cập nhật)
+- Tùy chọn fake browser fingerprint nếu dùng Puppeteer
+- Tùy chỉnh tốc độ cuộn, độ trễ giữa các thao tác (anti-bot delay)
+
+## 4. PHÂN TÍCH SẢN PHẨM
+- Tính toán các chỉ số:
+  - Doanh số trung bình
+  - Mức độ cạnh tranh (competition score)
+  - Chỉ số hấp dẫn (niche score)
+- So sánh cùng từ khóa/seller trong 7-14-30 ngày
+- Xếp hạng sản phẩm theo bộ tiêu chí tùy chọn
+
+## 5. DASHBOARD TRỰC QUAN HÓA DỮ LIỆU
+- Giao diện web hiển thị biểu đồ: lượt bán, xu hướng tăng/giảm, top seller
+- Bảng dữ liệu sản phẩm lọc theo thời gian, danh mục, seller
+- Biểu đồ heatmap theo giá, doanh số, độ cạnh tranh
+
+## 6. TÌM KIẾM & LỌC THÔNG MINH
+- Lọc theo từ khóa, seller, giá, số lượt bán, địa điểm
+- Lưu bộ lọc thành “project nghiên cứu sản phẩm”
+- So sánh nhiều sản phẩm cùng lúc (bảng so sánh)
+
+## 7. QUẢN LÝ DỮ LIỆU & LỊCH SỬ
+- Lưu dữ liệu dạng bảng, export CSV/Excel
+- Hệ thống lưu cache kết quả crawl để tránh trùng lặp
+- Lưu lịch sử crawl, phiên đăng nhập, API key CAPTCHA
+
+# CÔNG NGHỆ SỬ DỤNG:
+- Backend: .NET Core 8, ASP.NET Web API
+- Trình duyệt headless: Selenium / PuppeteerSharp
+- Database: PostgreSQL hoặc SQLite cho local test
+- CAPTCHA: 2Captcha API, hoặc hiển thị ảnh lên frontend xử lý tay
+- Dashboard: Blazor hoặc React + Recharts
+- Lưu trữ cloud (tuỳ chọn): Firebase, Supabase, hoặc S3
+
+# TIẾN ĐỘ HIỆN TẠI:
+- [x] Hoàn thiện chức năng crawl eBay theo từ khóa
+- [x] Thu thập đủ dữ liệu sản phẩm & seller
+- [ ] Phát triển hệ thống xử lý CAPTCHA
+- [ ] Xây dựng bảng tính và mô hình tính toán score
+- [ ] Phát triển Dashboard trực quan
+- [ ] Tối ưu tốc độ và cơ chế chống bot nâng cao
+
+# YÊU CẦU HỖ TRỢ TIẾP:
+- Thiết kế kiến trúc cơ sở dữ liệu mở rộng
+- Gợi ý mô hình dashboard trực quan
+- Tối ưu hiệu năng crawler theo từng sàn
+- Tích hợp proxy rotation hiệu quả
+
+# GHI CHÚ:
+- Ưu tiên eBay giai đoạn đầu để kiểm thử
+- Sau khi ổn định sẽ mở rộng ra Amazon, Etsy
+- Đảm bảo mã có thể chạy background hoặc lịch cron
+
+# CÁC VIỆC CẦN LÀM (TASK BREAKDOWN):
+
+## 1. GIAI ĐOẠN CHUẨN BỊ
+- Khởi tạo project .NET Core, thiết lập cấu trúc module
+- Tích hợp logging (Serilog hoặc NLog)
+- Thiết kế kiến trúc backend + database (phân tầng)
+
+## 2. PHÁT TRIỂN CRAWLER eBAY
+- Crawl dữ liệu sản phẩm theo từ khóa, danh mục
+- Crawl chi tiết sản phẩm và seller
+- Cấu hình delay, fake user-agent để tránh bot
+- Thiết kế bảng database và lưu dữ liệu crawl
+
+## 3. XỬ LÝ CAPTCHA & CHỐNG BOT
+- Phát hiện CAPTCHA (HTML, mã phản hồi)
+- Gửi CAPTCHA cho người dùng xử lý thủ công
+- Tích hợp 2Captcha API để giải tự động
+- Tích hợp proxy rotation, fake fingerprint
+
+## 4. PHÂN TÍCH SẢN PHẨM
+- Viết thuật toán tính niche score, doanh số TB, độ cạnh tranh
+- So sánh nhiều sản phẩm theo từ khóa / seller
+- Tạo API trả về dữ liệu phân tích cho dashboard
+
+## 5. DASHBOARD PHÂN TÍCH
+- Thiết kế giao diện web (Blazor/React)
+- Bảng dữ liệu + bộ lọc thông minh
+- Biểu đồ trực quan: doanh số, xu hướng, heatmap
+- Trang chi tiết sản phẩm
+
+## 6. QUẢN LÝ DỮ LIỆU & LỊCH SỬ
+- Lưu log các phiên crawl, CAPTCHA, proxy
+- Hệ thống export dữ liệu ra CSV/Excel
+- Cơ chế cache hoặc lưu lịch sử crawl
+
+## 7. MỞ RỘNG & TỐI ƯU
+- Mở rộng crawler sang Amazon, Etsy
+- Tích hợp AI phân tích sản phẩm ngách
+- Chạy crawler định kỳ bằng Hangfire / Quartz.NET
+- Giao diện cấu hình crawl: thời gian, từ khóa, nguồn
+- Thống kê CAPTCHA bị chặn (biểu đồ)
+- API kiểm tra trạng thái hệ thống

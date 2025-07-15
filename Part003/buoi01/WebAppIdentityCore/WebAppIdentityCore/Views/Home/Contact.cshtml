@@ -1,0 +1,21 @@
+﻿@model Contact
+<form method="post">
+    <div>
+        <label asp-for="Email">Email</label>
+        <input type="text" asp-for="Email" />
+    </div>
+
+    <div>
+        <label asp-for="Subject">Subject</label>
+        <input type="text" asp-for="Subject" />
+    </div>
+
+    <div>
+        <label asp-for="Body">Body</label>
+        <textarea name = "Body"></textarea>
+    </div>
+
+    <div>
+        <button>Send Email</button>
+    </div>
+</form>

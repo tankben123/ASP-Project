@@ -1,0 +1,24 @@
+﻿@model List<IdentityRole>
+<a href="/dashboard/role/add">Add role</a>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Id</td>
+                <td>@role.Name</td>
+                <td>
+                    <a href="/dashboard/role/edit/@role.Id">Edit</a>
+                    <a href="/dashboard/role/delete/@role.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

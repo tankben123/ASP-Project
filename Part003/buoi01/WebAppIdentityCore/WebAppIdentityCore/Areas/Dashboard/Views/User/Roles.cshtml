@@ -1,0 +1,23 @@
+﻿@model List<IdentityRole>
+
+<p>@ViewBag.user.PhoneNumber</p>
+<p>@ViewBag.user.UserName</p>
+<p>@ViewBag.user.Email</p>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>Role</tr>
+        <tr>Checked</tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Name</td>
+                <td>
+                    <input type="checkbox" name="roles" value="@role.Id" />
+                </td>
+            </tr>
+        }
+</table>

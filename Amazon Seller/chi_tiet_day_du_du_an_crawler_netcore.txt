@@ -1,0 +1,141 @@
+# TÊN DỰ ÁN:
+Xây dựng công cụ crawler phân tích thị trường thương mại điện tử giống ZIK Analytics / Helium10 bằng .NET Core
+
+# MỤC TIÊU:
+- Phân tích thị trường và tìm kiếm sản phẩm tiềm năng trên các sàn TMĐT như eBay (ưu tiên), Amazon, Etsy
+- Hỗ trợ seller dropshipping xác định sản phẩm bán chạy, theo dõi xu hướng, phân tích đối thủ
+- Tự động hóa quá trình thu thập và trực quan hóa dữ liệu
+
+# TÍNH NĂNG CHÍNH (ĐÃ CỤ THỂ HÓA KÈM QUY TRÌNH & CÔNG NGHỆ):
+
+## 1. CRAWLER THU THẬP DỮ LIỆU
+- Crawl theo từ khóa, danh mục, seller hoặc top trending.
+- Crawl các trường: title, price, sold, watching, seller info, shipping, images.
+- Công nghệ: .NET Core + Selenium/PuppeteerSharp
+- Lưu ý:
+  - Phân tích cấu trúc HTML trước để viết parser riêng cho từng khu vực
+  - Delay và user-agent cần random để tránh bot
+  - Cấu hình số trang, loại dữ liệu, tốc độ trong file config.json
+  - Tách riêng logic crawl (engine) và lưu (repository)
+
+## 2. XỬ LÝ CAPTCHA
+- Tự động phát hiện CAPTCHA (qua HTML, redirect)
+- Xử lý thủ công hoặc gọi 2Captcha API để tự động giải
+- Công nghệ: .NET + 2Captcha API, hoặc hiển thị ảnh CAPTCHA qua frontend
+- Lưu ý:
+  - Module riêng: CaptchaDetector + CaptchaHandler
+  - Ghi log từng CAPTCHA (thời gian, URL, IP)
+  - Cho phép retry 3 lần nếu CAPTCHA fail
+
+## 3. CHỐNG BOT DETECTION
+- Dùng Proxy rotation (Smartproxy, Brightdata, IP Pool)
+- Fake User-Agent, Fingerprint (nếu dùng Puppeteer)
+- Lưu ý:
+  - Viết ProxyManager kiểm tra tốc độ, loại bỏ proxy chết
+  - Ghi lại từng proxy đang dùng mỗi phiên
+  - Chạy test đơn lẻ mỗi proxy trước khi dùng thật
+
+## 4. PHÂN TÍCH SẢN PHẨM
+- Tính toán niche score, competition score, doanh số TB
+- So sánh theo từ khóa, seller, khung thời gian 7/14/30 ngày
+- Công nghệ: Service tính toán riêng (.NET Core), kết quả có thể cache
+- Lưu ý:
+  - Class ProductAnalyzer cần unit test
+  - Kiểm tra null và outlier khi tính toán
+  - Tối ưu query theo từng seller
+
+## 5. DASHBOARD TRỰC QUAN HÓA DỮ LIỆU
+- Hiển thị bảng dữ liệu, biểu đồ doanh số, heatmap
+- Lọc theo: ngày, seller, keyword, score
+- Công nghệ: ReactJS + Recharts hoặc Blazor + Chart.js
+- Lưu ý:
+  - Tối ưu phân trang dữ liệu lớn
+  - Axios hoặc HttpClient để gọi API backend
+  - Component tách biệt: Table, Chart, Filter, DetailPanel
+
+## 6. TÌM KIẾM & LỌC THÔNG MINH
+- Lọc sản phẩm theo: từ khóa, giá, sold, seller
+- Lưu bộ lọc thành project nghiên cứu
+- Công nghệ: LINQ Query / Dapper / Stored procedure
+- Lưu ý:
+  - Index cột thường tìm kiếm
+  - Viết FilterService riêng có hỗ trợ combine conditions
+  - Lưu preset filter vào bảng riêng theo user
+
+## 7. QUẢN LÝ DỮ LIỆU & LỊCH SỬ
+- Lưu cache kết quả crawl để tránh crawl lại
+- Export dữ liệu CSV / Excel
+- Lưu log crawl, proxy, CAPTCHA
+- Công nghệ:
+  - DB: PostgreSQL (production), SQLite (test)
+  - Gói export: ClosedXML hoặc CsvHelper
+- Lưu ý:
+  - Tách bảng crawl_log, captcha_log, proxy_log
+  - Cơ chế cache TTL 24h
+  - Dọn dẹp log cũ qua Hangfire job
+
+# CÔNG NGHỆ SỬ DỤNG:
+- Backend: .NET Core 8, ASP.NET Web API
+- Headless browser: Selenium / PuppeteerSharp
+- Database: PostgreSQL / SQLite
+- CAPTCHA: 2Captcha API
+- Dashboard: Blazor hoặc React + Recharts
+- Export dữ liệu: CsvHelper / ClosedXML
+- Job schedule: Hangfire / Quartz.NET
+- Proxy: ProxyMesh, BrightData, hoặc IP thủ công
+
+# TIẾN ĐỘ HIỆN TẠI:
+- [x] Crawl eBay sản phẩm theo từ khóa
+- [x] Lưu dữ liệu sản phẩm + seller
+- [ ] Xử lý CAPTCHA tự động
+- [ ] Module phân tích + tính score
+- [ ] Dashboard + bộ lọc
+- [ ] Cơ chế chống bot nâng cao
+
+# YÊU CẦU HỖ TRỢ TIẾP:
+- Thiết kế kiến trúc DB mở rộng (sẵn sàng scale)
+- Gợi ý UI/UX dashboard trực quan
+- Proxy rotation nâng cao (tự động phát hiện chết)
+- Gợi ý triển khai Hangfire chạy crawl định kỳ
+
+# GHI CHÚ:
+- Ưu tiên eBay để hoàn thiện MVP
+- Mở rộng Amazon, Etsy sau
+- Hướng tới khả năng chạy background hoặc lên lịch tự động
+
+# CÁC VIỆC CẦN LÀM (TASK BREAKDOWN):
+
+## 1. GIAI ĐOẠN CHUẨN BỊ
+- Tạo project .NET Core mới (API layer, Service layer, Data layer)
+- Tích hợp logging (Serilog)
+- Cấu hình config.json: delay, proxy, API key...
+
+## 2. PHÁT TRIỂN CRAWLER eBAY
+- Tạo module: CrawlerService, ProductParser, SellerParser
+- Crawl từng trường dữ liệu, xử lý lazyload
+- Lưu dữ liệu vào DB
+
+## 3. CAPTCHA & ANTI-BOT
+- Detect CAPTCHA + tạo ảnh gửi về frontend
+- Gửi CAPTCHA tới 2Captcha
+- ProxyManager + cấu hình proxy rotation
+
+## 4. PHÂN TÍCH DỮ LIỆU
+- Xây dựng công thức tính điểm
+- Viết service: ProductAnalyzer
+- Cache kết quả vào Redis (nếu có)
+
+## 5. DASHBOARD
+- Thiết kế giao diện React hoặc Blazor
+- Hiển thị biểu đồ, bảng, lọc
+- Gọi API hiển thị kết quả
+
+## 6. LỊCH SỬ VÀ XUẤT DỮ LIỆU
+- Ghi lịch sử crawl theo session
+- Cho phép export Excel
+- Tạo cron job dọn dữ liệu
+
+## 7. MỞ RỘNG
+- Crawler Amazon
+- Tự động hóa crawl định kỳ (Hangfire)
+- So sánh nhiều sản phẩm

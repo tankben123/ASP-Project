@@ -1,0 +1,11 @@
+﻿@using System.Security.Claims
+
+<a href="/auth/logout">Log Out</a>
+<p>Wellcome: @User.Identity?.Name</p>
+<p>Email: @User.FindFirstValue(ClaimTypes.Email)</p>
+<p>Email: @User.FindFirstValue(ClaimTypes.NameIdentifier)</p>
+<h2>Information</h2>
+@foreach (var item in User.Claims)
+{
+    <p>@item.Type: @item.Value</p>    
+}
