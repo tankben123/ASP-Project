@@ -10,9 +10,7 @@ ZZZ Update/
 *.scc
 *.pdb
 *.exe
-*.suo
 **/.vs
-*.csproj
 **/Properties	
 books_titles.json
 **/bin/
@@ -51,7 +49,7 @@ books_titles.json
 *.sav
 *.pkl
 *.h5
-*.joblib
+*.joblib 
 *.npy
 *.npz
 *.pb
