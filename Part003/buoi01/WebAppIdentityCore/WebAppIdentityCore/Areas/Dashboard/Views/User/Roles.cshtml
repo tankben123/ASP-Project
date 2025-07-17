@@ -1,14 +1,15 @@
-﻿@model List<IdentityRole>
+﻿@model List<RoleChecked>
 
 <p>@ViewBag.user.PhoneNumber</p>
 <p>@ViewBag.user.UserName</p>
 <p>@ViewBag.user.Email</p>
 
-
 <table class="table table-bordered">
     <thead>
-        <tr>Role</tr>
-        <tr>Checked</tr>
+        <tr>
+            <th>Role</th>
+            <th>Checked</th>
+        </tr>
     </thead>
     <tbody>
         @foreach (var role in Model)
@@ -16,18 +17,26 @@
             <tr>
                 <td>@role.Name</td>
                 <td>
-                    <input class="chk" type="checkbox" name="roles" value="@role.Id" />
+                    <input class="chk" type="checkbox" name="roles" value="@role.Id" @(role.I sChecked? "checked": string.Empty)/>
                 </td>
             </tr>
         }
+    </tbody>
 </table>
 
-
 @section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $('.chk').click(function () {
-            console.log($(this).val());
+            var rid = $(this).val();
+            var uid = '@ViewBag.user.Id';
+            $.post("/dashboard/user/addrole", { roleid: rid, userid: uid })
+                .done(function (d) {
+                    console.log(d);
+                })
+                .fail(function () {
+                    console.error("Failed to add role");
+                });
         });
     </script>
 }
-

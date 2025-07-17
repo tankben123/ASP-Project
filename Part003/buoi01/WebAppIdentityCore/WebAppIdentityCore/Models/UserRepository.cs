@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Threading.Tasks;
 
 namespace WebAppIdentityCore.Models
@@ -6,9 +7,11 @@ namespace WebAppIdentityCore.Models
     public class UserRepository
     {
         UserManager<IdentityUser> manager;
-        public UserRepository(UserManager<IdentityUser> userManager)
+        readonly RoleManager<IdentityRole> roleManager;
+        public UserRepository(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.manager = userManager;
+            this.roleManager = roleManager;
         }
 
         public async Task<IdentityResult> Add(RegisterModel model)
@@ -74,6 +77,33 @@ namespace WebAppIdentityCore.Models
         public async Task<IdentityUser?> GetUser(string id)
         {
             return await manager.FindByIdAsync(id);
+        }
+
+        public async Task<IList<string>?> GetRolesByUser(string id)
+        {
+            var user = await manager.FindByIdAsync(id);
+            if(user!= null)
+                return await manager.GetRolesAsync(user);
+
+            return null;
+        }
+
+        public async Task<IdentityResult?> Add(IdentityUserRole<string> obj)
+        {
+            var user = await manager.FindByIdAsync(obj.UserId);
+            var role = await roleManager.FindByIdAsync(obj.RoleId);
+            if (user != null && role != null && role.Name != null)
+            {
+                var roles = await manager.GetRolesAsync(user);
+                if (roles != null && roles.Any(p => p.Equals(role.Name)))
+                {
+                     return await manager.RemoveFromRoleAsync(user, role.Name);
+                }   
+
+                return await manager.AddToRoleAsync(user, role.Name);
+            }   
+
+            return null;
         }
     }
 }

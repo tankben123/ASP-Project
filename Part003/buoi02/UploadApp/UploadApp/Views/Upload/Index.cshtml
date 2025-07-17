@@ -1,0 +1,11 @@
+﻿@model List<Upload>
+<table>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @item.OriginalName
+            </td>
+        </tr>
+    }
+</table>

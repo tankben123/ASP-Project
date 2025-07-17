@@ -13,9 +13,9 @@ namespace WebAppIdentityCore.Controllers
         readonly SignInManager<IdentityUser> signInManager;
 
         readonly IConfiguration configuration = null;
-        public AuthController(UserManager<IdentityUser> manager, SignInManager<IdentityUser> signInManager, IConfiguration configuration)
+        public AuthController(UserManager<IdentityUser> manager, SignInManager<IdentityUser> signInManager, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
         {
-            this.repository = new UserRepository(manager);
+            this.repository = new UserRepository(manager, roleManager);
             this.signInManager = signInManager;
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
