@@ -11,7 +11,8 @@ ZZZ Update/
 *.pdb
 *.exe
 **/.vs
-**/Properties	
+**/Properties
+video_ASP/	
 books_titles.json
 **/bin/
 *.exe
