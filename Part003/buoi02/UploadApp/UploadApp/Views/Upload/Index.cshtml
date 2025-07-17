@@ -1,11 +1,63 @@
 ﻿@model List<Upload>
-<table>
-    @foreach (var item in Model)
-    {
+
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exModal">
+    Upload
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form name = "frm" method="post" enctype="multipart/form-data" class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label>Image</label>
+                <input type="file" name="f" accept="image/*"></input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script src="~/js/upload.js"></script>
+}
+
+
+
+<table class="table table-primary">
+    <thead class="border-dark">
         <tr>
-            <td>
-                @item.OriginalName
-            </td>
+            <th>Id</th>
+            <th>Original Name</th>
+            <th>Image</th>
+            <th>Type</th>
+            <th>Size</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.OriginalName</td>
+                <td>
+                    <img src="/Images/@item.Url" width="100" alt="@item.OriginalName"></img>
+                </td>
+                <td>@item.Type</td>
+                <td>@item.Size</td>
+            </tr>
+        }
+    </tbody>
+
+    
 </table>

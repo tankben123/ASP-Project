@@ -1,2 +1,4 @@
 *.bak filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
+Part003/buoi02/UploadApp/UploadApp/wwwroot/lib/jquery/jquery.min.js filter=lfs diff=lfs merge=lfs -text
+*.jpg filter=lfs diff=lfs merge=lfs -text
