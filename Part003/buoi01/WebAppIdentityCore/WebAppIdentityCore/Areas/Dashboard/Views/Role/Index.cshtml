@@ -1,7 +1,7 @@
 ﻿@model List<IdentityRole>
-<a href="/dashboard/role/add">Add role</a>
-<table>
-    <thead>
+<a class="btn btn-primary" href="/dashboard/role/add">Add role</a>
+<table class="table table-bordered">
+    <thead class="table-dark">
         <tr>
             <th>Id</th>
             <th>Name</th>
@@ -12,11 +12,11 @@
         @foreach (var role in Model)
         {
             <tr>
-                <td>@role.Id</td>
+                <td>@role.Id</td>   
                 <td>@role.Name</td>
                 <td>
-                    <a href="/dashboard/role/edit/@role.Id">Edit</a>
-                    <a href="/dashboard/role/delete/@role.Id">Delete</a>
+                    <a class="btn btn-primary" href="/dashboard/role/edit/@role.Id">Edit</a>
+                    <a class="btn btn-primary" href="/dashboard/role/delete/@role.Id">Delete</a>
                 </td>
             </tr>
         }

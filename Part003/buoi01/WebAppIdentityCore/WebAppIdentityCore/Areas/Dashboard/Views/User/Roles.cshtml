@@ -16,8 +16,18 @@
             <tr>
                 <td>@role.Name</td>
                 <td>
-                    <input type="checkbox" name="roles" value="@role.Id" />
+                    <input class="chk" type="checkbox" name="roles" value="@role.Id" />
                 </td>
             </tr>
         }
 </table>
+
+
+@section Scripts {
+    <script>
+        $('.chk').click(function () {
+            console.log($(this).val());
+        });
+    </script>
+}
+

@@ -1,6 +1,6 @@
 ﻿@model List<Microsoft.AspNetCore.Identity.IdentityUser>
-<table>
-    <thead>
+<table class="table table-bordered">
+    <thead class="table-dark">
         <tr>
             <th>Username</th>
             <th>Email</th>
@@ -16,7 +16,7 @@
                 <td>@user.Email</td>
                 <td>@user.PhoneNumber</td>
                 <td>
-                    <a href="/dashboard/user/roles/@user.Id">Roles</a>
+                    <a class="btn btn-primary" href="/dashboard/user/roles/@user.Id">Roles</a>
                 </td>
             </tr>
         }

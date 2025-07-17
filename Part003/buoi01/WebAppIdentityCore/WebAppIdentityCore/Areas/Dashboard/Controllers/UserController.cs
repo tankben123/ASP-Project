@@ -6,6 +6,7 @@ using WebAppIdentityCore.Models;
 namespace WebAppIdentityCore.Areas.Dashboard.Controllers
 {
     [Area("dashboard")]
+    [Route("dashboard/{controller=home}/{action=index}/{id?}")]
     public class UserController : Controller
     {
         UserRepository repository;
