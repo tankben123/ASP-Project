@@ -99,6 +99,9 @@ namespace UploadApp.Controllers
         public IActionResult Folder(IFormFile[] af)
         {
             string root = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images");
+
+            List<Upload> list = new List<Upload>();
+
             foreach (var item in af)
             {
                 if (item != null && item.Length > 0)
@@ -117,8 +120,15 @@ namespace UploadApp.Controllers
                         {
                             item.CopyTo(stream);
                         }
+
+                        list.Add(new Upload()
+                        {
+                            OriginalName = item.FileName,
+                            Url = Path.Combine(folder, fileName),
+                            Type = item.ContentType,
+                            Size = item.Length
+                        });
                     }
-                    
 
                     Console.WriteLine(item.FileName);
                     //string root = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images", "Folder");
