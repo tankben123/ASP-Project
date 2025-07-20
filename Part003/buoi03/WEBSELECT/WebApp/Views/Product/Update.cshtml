@@ -1,0 +1,38 @@
+﻿@model WebApp.Models.Product
+
+<div>
+    Sub Id: <span id="lblSubId">@Model?.SubCategoryId</span>
+</div>
+
+<form method="post">
+    <div>
+        <label>Category - SubCategory</label>
+        <select asp-for="SubCategoryId" asp-items="@ViewBag.categories">
+        </select>
+    </div>
+    <div>
+        <label>Tên sản phẩm</label>
+        <input type="text" asp-for="Name" />
+    </div>
+    <div>
+        <label>Giá bán</label>
+        <input type="number" asp-for="Price" />
+    </div>
+    <div>
+        <label>Giá gốc</label>
+        <input type="number" asp-for="PriceOrigin" />
+    </div>
+    <div>
+        <button type="submit">Save Changes</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('select[name="SubCategoryId"]').change(function () {
+                $('#lblSubId').text($(this).val());
+            });
+        });
+    </script>
+}

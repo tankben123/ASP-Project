@@ -1,0 +1,72 @@
+﻿<form method="post">
+    <div>
+        <label>Province</label>
+        <select name="ProvinceId" asp-items="@ViewBag.provinces"></select>
+    </div>
+    <div>
+        <label>District</label>
+        <select name="DistrictId"></select>
+    </div>
+    <div>
+        <label>Ward</label>
+        <select name="WardId"></select>
+    </div>
+    <div>
+        <label>Address name</label>
+        <input type="text" name="name"></input>
+    </div>
+    <div>
+        <label>Phone</label>
+        <input type="number" name="phone"></input>
+    </div>
+    <div>
+        <label>Email</label>
+        <input type="email" name="email"></input>
+    </div>
+    <div>
+        <button>Save Changes</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('select[name="ProvinceId"]').change(function () {
+                var provinceId = $(this).val();
+                $.ajax({
+                    url: '/address/districts',
+                    type: 'POST',
+                    data: { id: provinceId },
+                    success: function (data) {
+                        console.log(data);
+                        var districtSelect = $('select[name="DistrictId"]');
+                        districtSelect.empty();
+                        $.each(data, function (index, item) {
+                            districtSelect.append($('<option>', { value: item.id, text: item.name }));
+                        });
+                        districtSelect.change();
+                    }
+                });
+            });
+            $('select[name="DistrictId"]').change(function () {
+                var districtId = $(this).val();
+                $.ajax({
+                    url: '/address/getwards',
+                    type: 'GET',
+                    data: { districtId: districtId },
+                    success: function (data) {
+                        var wardSelect = $('select[name="WardId"]');
+                        wardSelect.empty();
+                        $.each(data, function (index, item) {
+                            wardSelect.append($('<option>', { value: item.id, text: item.id }));
+                        });
+                    }
+                });
+            });
+
+            if ($('select[name="ProvinceId"]').val()) {
+                $('select[name="ProvinceId"]').change();
+            }
+        });
+    </script>
+}

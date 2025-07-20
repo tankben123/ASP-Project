@@ -1,0 +1,84 @@
+﻿@model WebApp.Models.Product
+
+<div>
+    Sub Id: <span id="lblSubId">@Model?.SubCategoryId</span>
+</div>
+
+<form method="post">
+    <div>
+        <label>Category - SubCategory</label>
+        <select name="SubCategoryId" >
+            <option value="">-- Chọn nhóm sản phẩm --</option>
+            @foreach (var cat in (List<WebApp.Models.Category>)ViewBag.categories)
+            {
+                <optgroup label="@cat.Name">
+                    @foreach (var sub in cat.SubCategories)
+                    {
+                        <option value="@sub.Id" selected="@(Model != null && Model.SubCategoryId == sub.Id)">
+                            @sub.Name
+                        </option>
+                    }
+                </optgroup>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Tên sản phẩm</label>
+        <input type="text" name="Name" value="@Model?.Name"  />
+    </div>
+    <div>
+        <label>Giá bán</label>
+        <input type="number" name="Price" value="@Model?.Price" min="0" step="1000"  />
+    </div>
+    <div>
+        <label>Giá gốc</label>
+        <input type="number" name="PriceOrigin" value="@Model?.PriceOrigin" min="0" step="1000"  />
+    </div>
+    @* <div>
+        <label>Hình ảnh</label>
+        <input type="text" name="Image" value="@Model?.Image"  />
+    </div>
+    <div>
+        <label>Mô tả</label>
+        <input type="text" name="Content" value="@Model?.Content"  />
+    </div>
+    <div>
+        <label>Phân loại/Filter</label>
+        <input type="text" name="Filter" value="@Model?.Filter"  />
+    </div>
+    <div>
+        <label>Nổi bật (Featured)</label>
+        <select name="Featured">
+            <option value="false" selected="@(Model != null && !Model.Featured)">Không</option>
+            <option value="true" selected="@(Model != null && Model.Featured)">Có</option>
+        </select>
+    </div>
+    <div>
+        <label>Đã bán (Selling)</label>
+        <input type="number" name="Selling" value="@Model?.Selling" min="0"  />
+    </div>
+    <div>
+        <label>Lượt xem (View)</label>
+        <input type="number" name="View" value="@Model?.View" min="0"  />
+    </div>
+    <div>
+        <label>Công khai (Public)</label>
+        <select name="Public">
+            <option value="Y" selected="@(Model != null && Model.Public == "Y")">Có</option>
+            <option value="N" selected="@(Model != null && Model.Public == "N")">Không</option>
+        </select>
+    </div> *@
+    <div>
+        <button type="submit">Save Changes</button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('select[name="SubCategoryId"]').change(function () {
+                $('#lblSubId').text($(this).val());
+            });
+        });
+    </script>
+}

@@ -1,0 +1,44 @@
+﻿<a href="/select/taghelper">Tag Helper</a>
+
+<div id="lblId"></div>
+<div id="lblName"></div>
+
+
+<form method="post">
+    <div>
+        <label>Category</label>
+        <select name="categoryId">
+            @foreach (Category item in ViewBag.categories)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+    </div>
+    <div>
+        <label>Name</label>
+        <input type="text" name="name"></input>
+    </div>
+    <div>
+        <button>Save Changes</button>
+    </div>
+</form>
+
+@section Scripts {
+
+    <script>
+        function loadData(node)
+        {
+             $('#lblId').text(node.val());
+             $('#lblName').text(node.find('option:selected').text());
+        }
+
+        var node = $('select[name="categoryId"]');
+        loadData(node);
+            
+        node.change(function()
+        {
+            loadData($(this));
+        });
+
+    </script>
+}

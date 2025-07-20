@@ -1,0 +1,27 @@
+﻿@model SubCategory
+<span id="lblId"></span>
+
+<form method="post">
+    <div>
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="@ViewBag.categories"></select>
+    </div>
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" type="text"></input>
+    </div>
+    <div>Save Changes</div>
+</form>
+
+@section Scripts {
+    <script>
+        function loadData(node) {
+            $('#lblId').text(node.val());
+        }
+        var node = $('select[name="CategoryId"]');
+        loadData(node);
+        node.change(function() {
+            loadData($(this));
+        });
+    </script>
+}

@@ -1,0 +1,35 @@
+﻿@model List<Product>
+<a href="/product/add">Add</a>
+<a href="/product/create">Create</a>
+
+<table class="table table-primary">
+    <thead class="border border-dark">
+        <tr>
+            <td>Name</td>
+            <td>Price</td>
+            <td>Public</td>
+            <td>Selling</td>
+            <td>Featured</td>
+            <td>Filter</td>
+            <td>SubCategory</td>
+            <td>Command</td>
+        </tr>
+    </thead>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Price</td>
+            <td>@item.Public</td>
+            <td>@item.Selling</td>
+            <td>@item.Featured</td>
+            <td>@item.Filter</td>
+            <td>@item.SubCategory.Name</td>
+            <td>
+                <a href="/product/edit/@item.Id">Edit</a>
+                <a href="/product/update/@item.Id">Update</a>
+                <a href="/product/delete/@item.Id">Delete</a>
+            </td>
+        </tr>
+    }
+</table>

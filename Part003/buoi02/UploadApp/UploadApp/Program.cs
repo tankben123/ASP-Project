@@ -5,8 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-//string connectionString = builder.Configuration.GetConnectionString("BookStore") ?? throw new InvalidOperationException("Connection string 'BookStore' not found.");
-string connectionString = builder.Configuration.GetConnectionString("BookStore2") ?? throw new InvalidOperationException("Connection string 'BookStore' not found.");
+string connectionString = builder.Configuration.GetConnectionString("BookStore") ?? throw new InvalidOperationException("Connection string 'BookStore' not found.");
+//string connectionString = builder.Configuration.GetConnectionString("BookStore2") ?? throw new InvalidOperationException("Connection string 'BookStore' not found.");
 builder.Services.AddDbContext<StoreContext>(options => options.UseSqlServer(connectionString));
 
 var app = builder.Build();

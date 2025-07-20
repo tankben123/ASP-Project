@@ -1,0 +1,16 @@
+﻿@model List<SubCategory>
+
+<table class="table table-primary">
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Name</td>
+            <td>@item.Category.Name</td>
+            <td>
+                <a href="/select/editSubCategory/@item.Id">Edit</a>
+                <a href="/select/editsubcategory2/@item.Id">Edit2</a>
+            </td>
+        </tr>
+    }
+</table>
