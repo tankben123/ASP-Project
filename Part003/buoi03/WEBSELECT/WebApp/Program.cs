@@ -5,7 +5,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<OganiContext>(p => p.UseSqlServer(builder.Configuration.GetConnectionString("Ogani")));
+//builder.Services.AddDbContext<OganiContext>(p => p.UseSqlServer(builder.Configuration.GetConnectionString("Ogani")));
+builder.Services.AddDbContext<OganiContext>(p => p.UseSqlServer(builder.Configuration.GetConnectionString("Ogani2")));
 
 var app = builder.Build();
 

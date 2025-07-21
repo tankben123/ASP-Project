@@ -1,5 +1,7 @@
-﻿<form method="post">
-    <div>
+﻿@model Address
+<div asp-validation-summary="All"></div>
+<form method="post">
+    <div class="form_group"> 
         <label>Province</label>
         <select name="ProvinceId" asp-items="@ViewBag.provinces"></select>
     </div>
@@ -9,34 +11,34 @@
     </div>
     <div>
         <label>Ward</label>
-        <select name="WardId"></select>
+        <select asp-for="WardId"></select>
     </div>
     <div>
         <label>Address name</label>
-        <input type="text" name="name"></input>
+        <input class="form-control" type="text" asp-for="Name"></input>
     </div>
     <div>
         <label>Phone</label>
-        <input type="number" name="phone"></input>
+        <input class="form-control" type="number" asp-for="Phone"></input>
     </div>
     <div>
         <label>Email</label>
-        <input type="email" name="email"></input>
+        <input class="form-control" type="email" asp-for="Email"></input>
     </div>
     <div>
-        <button>Save Changes</button>
+        <button class="btn btn-primary">Save</button>
     </div>
 </form>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
-            $('select[name="ProvinceId"]').change(function () {
-                var provinceId = $(this).val();
+
+            function getDistricts(pid) {
                 $.ajax({
                     url: '/address/districts',
                     type: 'POST',
-                    data: { id: provinceId },
+                    data: { id: pid },
                     success: function (data) {
                         console.log(data);
                         var districtSelect = $('select[name="DistrictId"]');
@@ -47,26 +49,37 @@
                         districtSelect.change();
                     }
                 });
+            }
+
+            var pro = $('select[name="ProvinceId"]')
+            getDistricts(pro.val());
+
+            pro.change(function () {
+                var provinceId = pro.val();
+                getDistricts(provinceId);
             });
-            $('select[name="DistrictId"]').change(function () {
-                var districtId = $(this).val();
+
+
+
+            function getWards(districtId) {
                 $.ajax({
                     url: '/address/getwards',
-                    type: 'GET',
-                    data: { districtId: districtId },
+                    type: 'POST',
+                    data: { id: districtId },
                     success: function (data) {
                         var wardSelect = $('select[name="WardId"]');
                         wardSelect.empty();
                         $.each(data, function (index, item) {
-                            wardSelect.append($('<option>', { value: item.id, text: item.id }));
+                            wardSelect.append($('<option>', { value: item.id, text: item.name }));
                         });
                     }
                 });
-            });
-
-            if ($('select[name="ProvinceId"]').val()) {
-                $('select[name="ProvinceId"]').change();
             }
+
+            $('select[name="DistrictId"]').change(function () {
+                var districtId = $(this).val();
+                getWards(districtId);
+            });
         });
     </script>
-}
+}  

@@ -16,5 +16,6 @@ namespace WebApp.Models
         public byte DistrictId { get; set; }
 
         public District? Districts { get; set; }
+        public List<Address>? Addresses { get; set; }
     }
 }

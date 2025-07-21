@@ -1,4 +1,41 @@
-﻿<ul>
-    <a href="/">Back Home</a>
-    <a href="/address/add">Add Address</a>
-</ul>
+﻿@model List<Address>
+
+<div>
+    <a class="btn btn-primary" href="/">Back Home</a>
+    <a class="btn btn-primary" href="/address/add">Add Address</a>
+</div>
+
+
+<table class="table table-primary">
+    <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Ward</th>
+            <th>District</th>
+            <th>Province</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Command</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var address in Model)
+        {
+            <tr>
+                <td>@address.Id</td>
+                <td>@address.Name</td>
+                <td>@address.Ward?.Name</td>
+                <td>@address.Ward?.Districts?.Name</td>
+                <td>@address.Ward?.Districts?.Province?.Name</td>
+                <td>@address.Phone</td>
+                <td>@address.Email</td>
+                <td>
+                    <a class="btn btn-primary" href="/address/delete/@address.Id">Delete</a>
+                    <a class="btn btn-primary" href="/address/Edit/@address.Id">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
