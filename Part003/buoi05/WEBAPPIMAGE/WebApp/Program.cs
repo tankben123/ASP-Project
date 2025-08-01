@@ -5,8 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-//builder.Services.AddDbContext<OganiContext>(p => p.UseSqlServer(builder.Configuration.GetConnectionString("Ogani")));
-builder.Services.AddDbContext<OganiContext>(p => p.UseSqlServer(builder.Configuration.GetConnectionString("Ogani2")));
+builder.Services.AddDbContext<StoreContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Store2")));
 
 var app = builder.Build();
 
@@ -19,16 +18,17 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-
 app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapStaticAssets();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}")
+    .WithStaticAssets();
+
 
 app.Run();
-
-//thời gian làm bài: 29:30 phút
+// 39:20 buổi năm đoạn chèn script vào id rs

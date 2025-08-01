@@ -1,0 +1,40 @@
+﻿<div>
+    <a href="/image" class="btn btn-primary">Back</a>
+</div>
+<i class="fa-solid fa-images"></i>
+
+<div id="rs"></div>
+
+<form name="frm" class="d-none" enctype="multipart/form-data" method="post">
+    <input type="file" name="f" accept="image/*"/>
+</form>
+
+@section Scripts {
+    <script>
+        $('.fa-images').click(() => 
+        {
+            $('input[name="f"]').click();
+        });
+
+        $('input[name="f"]').change(function () {
+            if (this.files && this.files[0]) {
+                const formData = new FormData();
+                formData.append('f', this.files[0]);
+                $.ajax({
+                    url: '/image/upload',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (response) {
+                        console.log('Image uploaded successfully:', response);
+                        $('div[id="rs"]').append(`<img src="/images/${response.ImageUrl}" width="200">`);
+                    },
+                    error: function (xhr, status, error) {
+                        alert('Error uploading image: ' + error);
+                    }
+                });
+            }
+        });
+    </script>
+}

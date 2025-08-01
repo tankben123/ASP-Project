@@ -1,0 +1,29 @@
+﻿@model List<Image>
+<a href="/image/icon">Upload with Icon</a>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Original Name</th>
+            <th>Type</th>
+            <th>Size</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var image in Model)
+        {
+            <tr>
+                <td>@image.Id</td>
+                <td><img src="/images/@image.ImageUrl" width="100"></td>
+                <td>@image.OriginalName</td>
+                <td>@image.Type</td>
+                <td>@image.Size</td>
+                <td>
+                    <a href="/image/@image.Id"><i class="fa-solid fa-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
