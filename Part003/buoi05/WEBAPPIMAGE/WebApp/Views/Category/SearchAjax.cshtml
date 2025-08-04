@@ -1,0 +1,79 @@
+﻿@model List<Category>
+
+<form name = "frm" method="post">
+    <div>
+        <label for="from">Index from</label>
+        <input type="number" id="from" name="from" value="@Context.Request.Query["from"]" />
+    </div>
+
+    <div>
+        <label for="to">Index to</label>
+        <input type="number" id="to" name="to" value="@Context.Request.Query["to"]" />
+    </div>
+
+    <div>
+        <button>Search</button>
+    </div>
+</form>
+
+@section Scripts {
+
+    <script>
+        $('form[name="frm"]').submit(function (e) {
+            e.preventDefault();
+            var from = this.elements['from'].value;
+            var to = this.elements['to'].value;
+            $.ajax({
+                url: '/category/searchajax',
+                type: 'POST',
+                data: { from: from, to: to },
+                success: function (result) {
+                    console.log('Search results:', result);
+                    $('#sheet').empty();
+                    result.forEach(category => {
+                        $('#sheet').append(`<tr>
+                                                <td>${category.id}</td>
+                                                <td>${category.name}</td>
+                                                <td>
+                                                    <img src="/images/${category.imageUrl}" alt="${category.name}" width="100" />
+                                                </td>
+                                                <td>
+                                                    <a href="/Category/Edit/${category.id}" class="btn btn-primary">Edit</a>
+                                                    <a href="/Category/Delete/${category.id}" class="btn btn-primary">Delete</a>
+                                                </td>
+                                            </tr>`);
+                    });
+                }
+            });
+            });
+    </script>
+        
+}
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Image Url</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody id="sheet">
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>
+                    <img src="/images/@category.ImageUrl" alt="@category.Name" width="100" />
+                </td>
+                <td>
+                    <a href="/Category/Edit/@category.Id" class="btn btn-primary">Edit</a>
+                    <a href="/Category/Delete/@category.Id" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

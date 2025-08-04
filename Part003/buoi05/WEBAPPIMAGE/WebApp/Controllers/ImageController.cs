@@ -48,5 +48,32 @@ namespace WebApp.Controllers
             }
             return null;
         }
+
+        public async Task<IActionResult?> Delete(int id)
+        {
+            if (id > 0)
+            {
+                Image? image = await Provider.Image.GetImageByIdAsync(id);
+                if (image != null)
+                {
+                    string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", image.ImageUrl);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                    int ret = await Provider.Image.Delete(id);
+                    if (ret > 0)
+                    {
+                        return Redirect("/image");
+                    }
+                }
+            }
+            return Redirect("/image/error");
+        }
+
+        public  IActionResult DragAndDrop()
+        {
+            return View();
+        }   
     }
 }

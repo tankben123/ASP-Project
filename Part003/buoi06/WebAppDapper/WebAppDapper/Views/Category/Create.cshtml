@@ -1,0 +1,12 @@
+﻿@model WebAppDapper.Models.Category
+<form method="post">
+    <div>
+        <label asp-for="CategoryName"></label>
+        <input type ="text" asp-for="CategoryName" />
+    </div>
+    <div>
+        <label asp-for="CategoryCode"></label>
+        <input type="text" asp-for="CategoryCode" />
+    </div>
+    <button>Save Changes</button>
+</form>

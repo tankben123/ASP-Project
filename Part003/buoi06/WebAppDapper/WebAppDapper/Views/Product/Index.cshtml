@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Product>
+<table class="table table-bordered">
+    <thead class="table-primary">
+        <tr>
+            <th>Id</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Specification</th>
+            <th>Unit</th>
+            <th>Unit Of Price</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <td>@product.ProductId</td>
+                <td>@product.ProductCode</td>
+                <td>@product.ProductName</td>
+                <td>@product.Description</td>
+                <td>@product.Specification</td>
+                <td>@product.Unit</td>
+                <td>@product.UnitOfPrice</td>
+                <td>
+                    <a href="/Product/Edit/@product.ProductId" class="btn btn-warning">Edit</a>
+                    <a href="/Product/Delete/@product.ProductId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

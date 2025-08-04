@@ -1,0 +1,104 @@
+﻿@model List<Category>
+<a href="/category/search" class="btn btn-primary">Search</a>
+<a href="/category/searchajax" class="btn btn-primary">Search Ajax</a>
+<a href="/category/add" class="btn btn-primary"> Add</a>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+    Add
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form name="frm" class="modal-content" method="post">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="addModalLabel">Add Category</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="name" />
+                </div>
+                <div>
+                    <label>Image</label>
+                    <input type="file" name="f" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button class="btn btn-primary">Save changes</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        $('form[name="frm"]').submit(function (e) {
+            e.preventDefault();
+            var f = this.elements['f'].files[0];
+            if(f != null)
+            {
+                var formData = new FormData(this);
+                formData.append('f', f, f.name);
+                formData.append('name', this.elements['name'].value);
+                $.ajax({
+                    url: '/category/create',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (result) {
+                        console.log('Category added successfully:', result);
+                        $('#sheet').append(`<tr>
+                                                <td>${result.id}</td>
+                                                <td>${result.name}</td>
+                                                <td>
+                                                    <img src="/images/${result.imageUrl}" alt="${result.name}" width="100" />
+                                                </td>
+                                                <td>
+                                                    <a href="/Category/Edit/${result.id}" class="btn btn-primary">Edit</a> |
+                                                    <a href="/Category/Delete/${result.id}" class="btn btn-primary">Delete</a>
+                                                </td>
+                                            </tr>`)
+                        //window.location.reload(); // Reload the page to see the new category
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                    }
+                });
+            }
+        });
+    </script>
+}
+
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Image Url</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody id="sheet">
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>
+                    <img src="/images/@category.ImageUrl" alt="@category.Name" width="100" />
+                </td>
+                <td>
+                    <a href="/Category/Edit/@category.Id" class="btn btn-primary">Edit</a> |
+                    <a href="/Category/Delete/@category.Id" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

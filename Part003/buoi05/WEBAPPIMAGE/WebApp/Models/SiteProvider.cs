@@ -1,23 +1,40 @@
-﻿namespace WebApp.Models
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace WebApp.Models
 {
     public class SiteProvider
     {
         StoreContext context;
-        private ImageRepository? _image;
 
         public SiteProvider(StoreContext context)
         {
             this.context = context;
         }
 
+        ImageRepository _image;
+        CategoryRepository _repository;
 
         public ImageRepository Image
         {
             get
             {
-                if (_image is null)
-                    _image = new ImageRepository(context);
+                if (_image != null)
+                    return _image;
+
+                _image = new ImageRepository(context);
                 return _image;
+            }
+        }
+
+        public CategoryRepository Category
+        {
+            get
+            {
+                if (_repository != null)
+                    return _repository;
+
+                _repository = new CategoryRepository(context);
+                return _repository;
             }
         }
 

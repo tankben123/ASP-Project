@@ -8,5 +8,6 @@ namespace WebApp.Models
         {
         }
         public DbSet<Image> Images { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;
     }
 }

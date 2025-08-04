@@ -1,0 +1,45 @@
+﻿@model List<Category>
+
+<form>
+    <div>
+        <label for="from">Index from</label>
+        <input type="number" id="from" name = "from" value="@Context.Request.Query["from"]"/>
+    </div>
+
+    <div>
+        <label for="to">Index to</label>
+        <input type="number" id="to" name="to" value="@Context.Request.Query["to"]"/>
+    </div>
+
+    <div>
+        <button>Search</button>
+    </div>
+</form>
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Image Url</th>
+            <th>Command</th>
+        </tr>
+    </thead>
+    <tbody id="sheet">
+        @foreach (var category in Model)
+        {
+            <tr>
+                <td>@category.Id</td>
+                <td>@category.Name</td>
+                <td>
+                    <img src="/images/@category.ImageUrl" alt="@category.Name" width="100" />
+                </td>
+                <td>
+                    <a href="/Category/Edit/@category.Id" class="btn btn-primary">Edit</a>
+                    <a href="/Category/Delete/@category.Id" class="btn btn-primary">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

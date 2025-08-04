@@ -1,5 +1,6 @@
 ﻿@model List<Image>
-<a href="/image/icon">Upload with Icon</a>
+<a href="/image/draganddrop" class="btn btn-primary">Upload with Drag and Drop</a>
+<a href="/image/icon" class="btn btn-primary">Upload with Icon</a>
 <table class="table table-bordered">
     <thead>
         <tr>
@@ -21,7 +22,7 @@
                 <td>@image.Type</td>
                 <td>@image.Size</td>
                 <td>
-                    <a href="/image/@image.Id"><i class="fa-solid fa-trash"></i></a>
+                    <a href="/image/delete/@image.Id"><i class="fa-solid fa-trash"></i></a>
                 </td>
             </tr>
         }

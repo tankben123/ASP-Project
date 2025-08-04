@@ -28,7 +28,7 @@
                     processData: false,
                     success: function (response) {
                         console.log('Image uploaded successfully:', response);
-                        $('div[id="rs"]').append(`<img src="/images/${response.ImageUrl}" width="200">`);
+                        $('div[id="rs"]').append(`<img src="/images/${response.imageUrl}" width="200">`);
                     },
                     error: function (xhr, status, error) {
                         alert('Error uploading image: ' + error);
