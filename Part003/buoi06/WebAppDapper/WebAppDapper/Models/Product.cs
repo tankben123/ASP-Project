@@ -6,6 +6,7 @@ namespace WebAppDapper.Models
     {
         public int ProductId { get; set; }
         public short CategoryId { get; set; }
+        public string? CategoryName { get; set; }
         public string? ProductCode { get; set; }
         public string? ProductName { get; set; }
         public string? Unit { get; set; }

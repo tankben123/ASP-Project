@@ -3,7 +3,7 @@
 <form action="/product/search">
     <div class="mb-3">
         <label for="search" class="form-label">Search</label>
-        <input type="text" name="q" class="form-control" placeholder="Enter product name or code">
+        <input type="text" name="q" value="@Context.Request.Query["q"]" class="form-control" placeholder="Enter product name or code">
     </div>
     <button type="submit" class="btn btn-primary">Search</button>
 </form>

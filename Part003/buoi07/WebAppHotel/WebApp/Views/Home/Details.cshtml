@@ -1,0 +1,32 @@
+﻿@model WebApp.Models.Room
+<div>
+    <h1>@Model.RoomName</h1>
+    <div><img src="/images/@Model.ImageUrl" alt="@Model.RoomName" width="350" height="350"  /></div>
+
+    @foreach(var item in Model.Reservations)
+    {
+        <div class="card">
+            <div class="card-header @item.State?.StateColor">
+                <div class="card-title">@item.State?.StateName 
+                    <span>@item.StartDate.ToString("dd/MM/yyyy hh:mm:ss")</span> 
+                    <span>@item.EndDate.ToString("dd/MM/yyyy hh:mm:ss")</span>
+                </div>
+            </div>
+            <div class="card-body">
+                @foreach (var child in item.State?.Transitions)
+                {
+                    <div class="mb-2">
+                        @if (child.ToStateId != null)
+                        {
+                            <a class="btn btn-primary" href="/home/state/@item.ReservationId/@child.ToStateId">@child.Name</a>
+                        }
+                        else
+                        {
+                            <span class="btn btn-secondary">@child.Name</span>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }   
+</div>

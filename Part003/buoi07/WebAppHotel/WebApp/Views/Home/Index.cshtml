@@ -1,0 +1,14 @@
+﻿@model IEnumerable<WebApp.Models.Room>
+<div class="row">
+    @foreach(var item in Model)
+    {
+        <div class="col-6">
+            <h2><a href="/home/details/@item.RoomId">@item.RoomName</a></h2>
+            <div>
+                <a href="/home/details/@item.RoomId">
+                    <img src="/images/@item.ImageUrl" alt="@item.RoomName" width="350" height="350" />
+                </a>
+            </div>
+        </div>
+    }
+</div>
