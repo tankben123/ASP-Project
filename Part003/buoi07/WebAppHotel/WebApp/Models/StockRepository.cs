@@ -5,9 +5,9 @@
         public StockRepository(StoreContext context) : base(context)
         {
         }
-        public List<Stock> GetStocks()
+        public List<Stock> GetStocks(DateTime startDate, DateTime endDate)
         {
-            return _context.Stocks.ToList();
+            return _context.Stocks.Where(p=> p.Date >= startDate && p.Date <= endDate).ToList();
         }
         public int AddStock(Stock stock)
         {

@@ -1,0 +1,39 @@
+﻿@model List<Stock>
+<form method="get" action="/stock/search">
+    <div>
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" value="@Context.Request.Query["startDate"]">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" value="@Context.Request.Query["endDate"]">
+    </div>
+    <div>
+        <button>Search</button>
+    </div>
+</form>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Open</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Close</th>
+            <th>Adj Close</th>
+            <th>Volume</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var stock in Model)
+        {
+            <tr>
+                <td>@stock.Date.ToString("yyyy-MM-dd")</td>
+                <td>@stock.Open</td>
+                <td>@stock.High</td>
+                <td>@stock.Low</td>
+                <td>@stock.Close</td>
+                <td>@stock.AdjClose</td>
+                <td>@stock.Volume</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -23,7 +23,8 @@ namespace WebApp.Models
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Transition>().HasNoKey();
-            modelBuilder.Entity<Stock>().HasNoKey();
+            modelBuilder.Entity<Stock>()
+    .HasKey(s => new { s.Date, s.Close, s.Volume });
 
             //modelBuilder.Entity<Transition>().
             //    HasOne(t => t.FromState)

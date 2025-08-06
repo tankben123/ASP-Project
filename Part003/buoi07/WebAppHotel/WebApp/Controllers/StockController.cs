@@ -28,11 +28,11 @@ namespace WebApp.Controllers
                 Stock stock = new Stock
                 {
                     Date = DateTime.Parse(parts[0]),
-                    Open = float.Parse(parts[1]),
-                    High = float.Parse(parts[2]),
-                    Low = float.Parse(parts[3]),
-                    Close = float.Parse(parts[4]),
-                    AdjClose = float.Parse(parts[5]),
+                    Open = double.Parse(parts[1]),
+                    High = double.Parse(parts[2]),
+                    Low = double.Parse(parts[3]),
+                    Close = double.Parse(parts[4]),
+                    AdjClose = double.Parse(parts[5]),
                     Volume = int.Parse(parts[6])
                 };
                 list.Add(stock);
@@ -41,8 +41,18 @@ namespace WebApp.Controllers
             if (ret > 0)
             {
                 return Redirect("/stock");
-            }    
+            }
             return Redirect("/stock/error");
+        }
+
+        public IActionResult Search(DateTime startDate, DateTime endDate)
+        {
+            if (startDate == default || endDate == default)
+            {
+                return Redirect("/stock");
+            }
+            List<Stock> stocks = _repository.GetStocks(startDate, endDate);
+            return View(stocks);
         }
     }
 }
