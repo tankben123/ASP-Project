@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using WebApp.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<StoreContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Store2")));
+
+builder.Services.AddScoped<StudentRepository>();
 
 var app = builder.Build();
 
@@ -27,4 +34,4 @@ app.MapControllerRoute(
 
 
 app.Run();
-//bu?i 8 58:02
+//bu?i 8 20:14
