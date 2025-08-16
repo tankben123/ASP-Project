@@ -45,8 +45,6 @@ books_titles.json
 *.csv
 *.tsv
 *.parquet
-*.xls
-*.xlsx
 *.sav
 *.pkl
 *.h5
