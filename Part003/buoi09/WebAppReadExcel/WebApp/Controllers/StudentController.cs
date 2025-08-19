@@ -101,13 +101,18 @@ namespace WebApp.Controllers
         public IActionResult List(int start, int length, IFormCollection form)
         {
             int total = _studentRepository.GetStudents().Count;
+
+            int col = Convert.ToInt32(form["order[0][column]"]);
+            string? dir = form["order[0][dir]"];
+            dir = dir?.ToLower() == "asc" ? "asc" : "desc";
+
             string? q = form["search[value]"];
             List<Student> data;
             if(string.IsNullOrEmpty(q))
-                data = _studentRepository.GetStudents(start, length);
+                data = _studentRepository.GetStudents(col, dir, start, length, out total);
             else
-                data = _studentRepository.Search(q, start, length, out total);
-            
+                data = _studentRepository.Search(col, dir, q, start, length, out total);
+
             var obj = new
             {
                 Data = data,
@@ -115,6 +120,18 @@ namespace WebApp.Controllers
                 RecordsFiltered = total
             };
             return Json(obj);
+        }
+
+
+        [Route("/student/pagination/{page?}")]
+        public IActionResult Pagination(int page = 1)
+        {
+
+            int size = 10;
+            List<Student> students = _studentRepository.GetStudents((page - 1) * size, size, out int total);
+            ViewBag.total = total;
+            ViewBag.page = total / size + (total % size > 0 ? 1 : 0);
+            return View(students);
         }
     }
 }

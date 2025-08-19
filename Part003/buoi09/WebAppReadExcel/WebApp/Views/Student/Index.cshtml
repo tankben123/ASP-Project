@@ -1,6 +1,5 @@
-﻿<a href="/student">Back</a>
+﻿<a href="/student/show">Show</a>
 <a href="/student/import">Import</a>
-
 @model List<Student>
 <table id="tbl" class="table table-striped">
     <thead>
@@ -22,11 +21,44 @@
         </tr>
     </thead>
     <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.FullName</td>
+                <td>
+                    @{
+                        DateTime? dob = null;
+                        if (DateTime.TryParse(student.DateOfBirth, out var parsedDob))
+                        {
+                            dob = parsedDob;
+                        }
+                    }
+                    @(dob.HasValue ? dob.Value.ToShortDateString() : "")
+                </td>
+                <td>@student.Gender</td>
+                <td>@student.IdentificationNumber</td>
+                <td>@student.Subject</td>
+                <td>@student.Area</td>
+                <td>@student.Score1</td>
+                <td>@student.Score2</td>
+                <td>@student.Score3</td>
+                <td>@student.SrNo</td>
+                <td>@student.MajorId</td>
+                <td>@student.ScoreAreaExtra</td>
+                <td>@student.ScoreExtra</td>
+                <td>
+                    <a href="/student/edit/@student.IdentificationNumber" class="btn btn-primary">Edit</a>
+                    <a href="/student/delete/@student.IdentificationNumber" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
 @section Scripts {
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.css" />
+
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.4/js/dataTables.buttons.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.dataTables.js"></script>
@@ -36,40 +68,20 @@
     <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#tbl').DataTable({
-                ajax: {
-                    url: '/student/list', // Ensure this endpoint returns JSON data
-                    method: 'POST',
-                    dataSrc: 'data' // Adjust this based on the JSON structure returned by the server
-                },
-                processing: true,
-                serverSide: true,
-                columns: [
-                    { data: 'fullName' },
-                    { data: 'dateOfBirth' },
-                    { data: 'gender' },
-                    { data: 'identificationNumber' },
-                    { data: 'subject' },
-                    { data: 'area' },
-                    { data: 'score1' },
-                    { data: 'score2' },
-                    { data: 'score3' },
-                    { data: 'srNo' },
-                    { data: 'majorId' },
-                    { data: 'scoreAreaExtra' },
-                    { data: 'scoreExtra' },
-                    {
-                        data: null,
-                        render: function (data, type, row) {
-                            return `
-                                <a href="/student/edit/${row.identificationNumber}" class="btn btn-primary">Edit</a>
-                                <a href="/student/delete/${row.identificationNumber}" class="btn btn-danger">Delete</a>
-                            `;
+        $(document).ready(function () 
+        {
+                    $('#tbl').DataTable({
+                    layout: {
+                        topStart: {
+                                buttons: ['copy', 'csv', 'excel', 'pdf', 'print','pageLength']
                         }
                     }
-                ]
-            });
-        });
+                });
+    });
     </script>
 }
+
+
+
+
+     

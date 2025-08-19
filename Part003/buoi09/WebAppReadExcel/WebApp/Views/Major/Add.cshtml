@@ -1,0 +1,15 @@
+﻿@model Major
+<div asp-validation-summary="All"></div>
+<form method="post">
+    <div>
+        <label asp-for="MajorId">Major Id</label>
+        <input asp-for="MajorId" />
+        <span asp-validation-for="MajorId"></span>
+    </div>
+    <div>
+        <label asp-for="MajorName">Name</label>
+        <input asp-for="MajorName" />
+        <span asp-validation-for="MajorName"></span>
+    </div>
+    <button type="submit">Save changes</button>
+</form>

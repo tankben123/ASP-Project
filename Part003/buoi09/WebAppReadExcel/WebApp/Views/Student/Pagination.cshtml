@@ -1,0 +1,114 @@
+﻿@model List<Student>
+@{
+    int p = 1;
+    if (ViewContext.RouteData.Values["page"] != null)
+    {
+        p = Convert.ToInt32(ViewContext.RouteData.Values["page"]);
+    }
+}
+
+
+
+<ul class="pagination">
+    @for (int i = 1; i <= ViewBag.page; i++)
+    {
+        if (i == p)
+        {
+            <li class="page-item active">
+                <a class="page-link" href="/student/pagination/@i">@i</a>
+            </li>
+
+        }
+        else
+        {
+            <li class="page-item"">
+                <a class="page-link" href="/student/pagination/@i">@i</a>
+            </li>
+        }
+    }
+</ul>
+
+
+<table id="tbl" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Identification Number</th>
+            <th>Subject</th>
+            <th>Area</th>
+            <th>Score1</th>
+            <th>Score2</th>
+            <th>Score3</th>
+            <th>SrNo</th>
+            <th>MajorId</th>
+            <th>ScoreAreaExtra</th>
+            <th>ScoreExtra</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.FullName</td>
+                <td>
+                    @{
+                        DateTime? dob = null;
+                        if (DateTime.TryParse(student.DateOfBirth, out var parsedDob))
+                        {
+                            dob = parsedDob;
+                        }
+                    }
+                    @(dob.HasValue? dob.Value.ToShortDateString() : "")
+                </td>
+                <td>@student.Gender</td>
+                <td>@student.IdentificationNumber</td>
+                <td>@student.Subject</td>
+                <td>@student.Area</td>
+                <td>@student.Score1</td>
+                <td>@student.Score2</td>
+                <td>@student.Score3</td>
+                <td>@student.SrNo</td>
+                <td>@student.MajorId</td>
+                <td>@student.ScoreAreaExtra</td>
+                <td>@student.ScoreExtra</td>
+                <td>
+                    <a href="/student/edit/@student.IdentificationNumber" class="btn btn-primary">Edit</a>
+                    <a href="/student/delete/@student.IdentificationNumber" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.css" />
+
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
+    <script>
+            $(document).ready(function ()
+            {
+                        $('#tbl').DataTable({
+                        layout: {
+                            topStart: {
+                                    buttons: ['copy', 'csv', 'excel', 'pdf', 'print','pageLength']
+                            }
+                        }
+                    });
+        });
+    </script>
+}
+
+
+
+
