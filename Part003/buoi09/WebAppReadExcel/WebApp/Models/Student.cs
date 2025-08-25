@@ -5,6 +5,8 @@ namespace WebApp.Models
     [Table("Student")]
     public class Student
     {
+        internal string identificationNumber;
+
         public string? FullName { get; set; } 
         public string? DateOfBirth { get; set; } 
         public bool Gender { get; set; } 

@@ -134,5 +134,30 @@ namespace WebApp.Models
             return _context.Students.FromSqlRaw(sql).ToList();
         }
 
+        public Student? GetStudent(string? id)
+        {
+            return _context.Students.Where(p => p.IdentificationNumber == id).FirstOrDefault();
+        }
+
+        public int Edit(Student obj)
+        {
+            if (obj == null)
+            {
+                return -1;
+            }
+
+            Student? student = GetStudent(obj.IdentificationNumber);
+
+            if (student == null)
+            {
+                return -1;
+            }
+
+            student.FullName = obj.FullName?.Trim();
+
+            _context.Students.Update(student);
+            return _context.SaveChanges();
+        }
+
     }
 }

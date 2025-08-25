@@ -1,0 +1,118 @@
+﻿@section Scripts {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <style>
+        .ui-autocomplete-loading {
+            background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
+        }
+    </style>
+
+
+    <script>
+        $( function() {
+          function log( message ) {
+            $( "<div>" ).text( message ).prependTo( "#log" );
+            $( "#log" ).scrollTop( 0 );
+          }
+
+          $( "#birds" ).autocomplete({
+            source: function(req, response) {
+              $.ajax({
+                  type: "post",
+                  url: "/major/find",
+                  data: { term: req.term },
+                  success: function(data) {
+                    console.log(data);
+                    response(data);
+                  }
+              });
+            },
+            minLength: 2,
+            select: function( event, ui ) {
+                $.post("/major/getstudents", { id: ui.item.id }, (d)=>
+                {
+                    console.log(d);
+                    $('#sheet').empty();
+                    for(var student of d)
+                    {
+                        $('#sheet').append(`
+                            <tr>
+                                <td>${student.fullName}</td>
+                                <td>
+                                    ${
+                                                (() => {
+                                                if (student.dateOfBirth && student.dateOfBirth.trim() !== "") {
+                                                    const parts = student.dateOfBirth.trim().split("/");
+                                                    if (parts.length === 3) {
+                                                        const day = parseInt(parts[0], 10);
+                                                        const month = parseInt(parts[1], 10) - 1; 
+                                                        const year = parseInt(parts[2], 10);
+
+                                                        const dob = new Date(year, month, day);
+
+                                                        return isNaN(dob) ? "Invalid Date" : dob.toLocaleDateString();
+                                                    } else {
+                                                        return "Invalid Format";
+                                                    }
+                                                } else {
+                                                    return "N/A";
+                                                }
+                                            })()
+                                    }
+                                </td>
+                                <td>${student.gender}</td>
+                                <td>${student.identificationNumber}</td>
+                                <td>${student.subject}</td>
+                                <td>${student.area}</td>
+                                <td>${student.score1}</td>
+                                <td>${student.score2}</td>
+                                <td>${student.score3}</td>
+                                <td>${student.srNo}</td>
+                                <td>${student.majorId}</td>
+                                <td>${student.scoreAreaExtra}</td>
+                                <td>${student.scoreExtra}</td>
+                                <td>
+                                    <a href="/student/edit/${student.identificationNumber}" class="btn btn-primary">Edit</a>
+                                    <a href="/student/delete/${student.identificationNumber}" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        `)
+                    }
+                });
+              //console.log( "Selected: " + ui.item.value + " aka " + ui.item.id );
+
+            } 
+          });
+        } );
+    </script>
+}
+
+<div class="ui-widget">
+    <label for="birds">Birds: </label>
+    <input id="birds" type="text" placeholder="Input major name">
+</div>
+
+
+<table id="tbl" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Identification Number</th>
+            <th>Subject</th>
+            <th>Area</th>
+            <th>Score1</th>
+            <th>Score2</th>
+            <th>Score3</th>
+            <th>SrNo</th>
+            <th>MajorId</th>
+            <th>ScoreAreaExtra</th>
+            <th>ScoreExtra</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="sheet"></tbody>
+</table>

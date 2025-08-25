@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using WebApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +25,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
-
+ 
 app.MapStaticAssets();
 
 app.MapControllerRoute(
@@ -35,4 +35,4 @@ app.MapControllerRoute(
 
 
 app.Run();
-//bu?i 9 11:47
+//buổi 10 09:59

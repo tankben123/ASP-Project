@@ -133,5 +133,41 @@ namespace WebApp.Controllers
             ViewBag.page = total / size + (total % size > 0 ? 1 : 0);
             return View(students);
         }
+
+        [HttpGet("/student/edit/{page}/{identificationNumber}")]
+        public IActionResult Edit(int page, string identificationNumber)
+        {
+            if (string.IsNullOrEmpty(identificationNumber))
+            {
+                return NotFound();
+            }
+            var student = _studentRepository.GetStudent(identificationNumber);
+            if (student == null)
+            {
+                return NotFound();
+            }
+            return View(student);
+        }
+
+        [HttpPost("/student/edit/{page}/{identificationNumber}")]
+        public IActionResult Edit(int page, string identificationNumber, Student obj)
+        {
+            if (string.IsNullOrEmpty(identificationNumber))
+            {
+                return NotFound();
+            }
+            if (obj == null)
+            {
+                return BadRequest();
+            }
+            obj.IdentificationNumber = identificationNumber;
+            int ret = _studentRepository.Edit(obj);
+            if (ret > 0)
+            {
+                TempData["Message"] = "Student updated successfully.";
+                return Redirect($"/student/pagination/{page}");
+            }
+            return View(obj);
+        }
     }
 }

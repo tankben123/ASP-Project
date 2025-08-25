@@ -1,4 +1,6 @@
-﻿namespace WebApp.Models
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace WebApp.Models
 {
     public class MajorRepository:BaseRepository
     {
@@ -36,5 +38,17 @@
                 .Take(size)
                 .ToList();
         }
+
+        public List<Major> Search(string q)
+        {
+            return _context.Majors
+                .Where(m => m.MajorName != null && m.MajorName.Contains(q))
+                .ToList();
+        }
+
+        public List<Student> GetStudentByMajor(string id)
+        {
+            return _context.Students.Where(s => s.MajorId == id).ToList();
+        }
     }
-}
+} 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Tls;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -40,5 +41,39 @@ namespace WebApp.Controllers
             return View(obj);
         }
 
+        public IActionResult Search(string term)
+        {
+            return Json(MajorRepository.Search(term).Select(p => new { Id = p.MajorId, Value = p.MajorName }));
+        }
+
+        public IActionResult Student()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Find(string term)
+        {
+            
+            return Json(MajorRepository.Search(term).Select(p => new { Id = p.MajorId, Value = p.MajorName }));
+        }
+
+        [HttpPost]
+        public IActionResult GetStudents(string id)
+        {
+            return Json(MajorRepository.GetStudentByMajor(id));
+        }
+
+        public IActionResult Show()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult PartialShow([FromForm] string q)
+        {
+            //partial view khác view ở chỗ nó không có layout
+            return PartialView(MajorRepository.GetStudentByMajor(q));
+        }
     }
 }

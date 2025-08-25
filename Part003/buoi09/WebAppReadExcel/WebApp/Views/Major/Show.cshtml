@@ -1,0 +1,68 @@
+﻿<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="ui-widget">
+                    <label for="birds">Birds: </label>
+                    <input id="birds" type="text" placeholder="Input major name">
+                </div>
+                <div id="rs"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .ui-autocomplete-loading {
+            background: white url("/images/ui-anim_basic_16x16.gif") right center no-repeat;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+          function log( message ) {
+            $( "<div>" ).text( message ).prependTo( "#log" );
+            $( "#log" ).scrollTop( 0 );
+          }
+
+          $( "#birds" ).autocomplete({
+            source: function(req, response) {
+              $.ajax({
+                  type: "post",
+                  url: "/major/find",
+                  data: { term: req.term },
+                  success: function(data) {
+                    console.log(data);
+                    response(data);
+                  }
+              });
+            },
+            minLength: 2,
+            select: function( event, ui ) {
+              console.log(ui);
+              $.post("/major/partialshow", { id: ui.item.id }, function(data) {
+                  console.log(data);
+              });
+            }
+          });
+        } );
+    </script>
+}
