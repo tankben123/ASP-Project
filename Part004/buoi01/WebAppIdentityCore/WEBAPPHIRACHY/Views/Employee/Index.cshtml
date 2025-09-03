@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Employee>
+
+<a href="/employee/add">Add</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>EmployeeId</th>
+            <th>FirstName</th>
+            <th>LastName</th>
+            <th>Email</th>
+            <th>Gender</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var employee in Model)
+        {
+            <tr>
+                <td>@employee.EmployeeId</td>
+                <td>@employee.FirstName</td>
+                <td>@employee.LastName</td> 
+                <td>@employee.Email</td>
+                <td>@employee.Gender</td>
+            </tr>
+        }
+    </tbody>
+</table>

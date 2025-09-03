@@ -1,0 +1,28 @@
+﻿@model Employee
+<div asp-validation-summary="All"></div>
+<form method="post">
+    <div>
+        <label>First Name:</label>
+        <input type="text" asp-for="FirstName" />
+    </div>
+    <div>
+        <label>Last Name:</label>
+        <input type="text" asp-for="LastName" />
+    </div>
+    <div>
+        <label>Gender:</label>
+        <select asp-for="Gender">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select>
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="email" asp-for="Email" />
+    </div>
+    <div>
+        <label>Phone:</label>
+        <input type="tel" asp-for="Phone" />
+    </div>
+    <button type="submit">Add Employee</button>
+</form>

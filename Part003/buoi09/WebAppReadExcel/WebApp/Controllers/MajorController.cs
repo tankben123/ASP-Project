@@ -54,7 +54,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Find(string term)
         {
-            
+
             return Json(MajorRepository.Search(term).Select(p => new { Id = p.MajorId, Value = p.MajorName }));
         }
 
@@ -72,8 +72,9 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult PartialShow([FromForm] string q)
         {
+            List<Student> list = MajorRepository.GetStudentByMajor(q);
             //partial view khác view ở chỗ nó không có layout
-            return PartialView(MajorRepository.GetStudentByMajor(q));
+            return PartialView(list);
         }
     }
 }

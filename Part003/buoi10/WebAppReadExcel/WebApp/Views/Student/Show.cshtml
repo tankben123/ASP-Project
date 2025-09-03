@@ -1,0 +1,75 @@
+﻿<a href="/student">Back</a>
+<a href="/student/import">Import</a>
+
+@model List<Student>
+<table id="tbl" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Full Name</th>
+            <th>Date of Birth</th>
+            <th>Gender</th>
+            <th>Identification Number</th>
+            <th>Subject</th>
+            <th>Area</th>
+            <th>Score1</th>
+            <th>Score2</th>
+            <th>Score3</th>
+            <th>SrNo</th>
+            <th>MajorId</th>
+            <th>ScoreAreaExtra</th>
+            <th>ScoreExtra</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.2.4/css/buttons.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.4/js/buttons.print.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#tbl').DataTable({
+                ajax: {
+                    url: '/student/list', // Ensure this endpoint returns JSON data
+                    method: 'POST',
+                    dataSrc: 'data' // Adjust this based on the JSON structure returned by the server
+                },
+                processing: true,
+                serverSide: true,
+                columns: [
+                    { data: 'fullName' },
+                    { data: 'dateOfBirth' },
+                    { data: 'gender' },
+                    { data: 'identificationNumber' },
+                    { data: 'subject' },
+                    { data: 'area' },
+                    { data: 'score1' },
+                    { data: 'score2' },
+                    { data: 'score3' },
+                    { data: 'srNo' },
+                    { data: 'majorId' },
+                    { data: 'scoreAreaExtra' },
+                    { data: 'scoreExtra' },
+                    {
+                        data: null,
+                        render: function (data, type, row) {
+                            return `
+                                <a href="/student/edit/${row.identificationNumber}" class="btn btn-primary">Edit</a>
+                                <a href="/student/delete/${row.identificationNumber}" class="btn btn-danger">Delete</a>
+                            `;
+                        }
+                    }
+                ]
+            });
+        });
+    </script>
+}

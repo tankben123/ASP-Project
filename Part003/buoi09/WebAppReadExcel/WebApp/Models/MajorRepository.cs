@@ -29,8 +29,13 @@ namespace WebApp.Models
                 throw new ArgumentException("Major name cannot be null or empty", nameof(obj.MajorName));
             }
 
-            _context.Majors.Add(obj);
-            return _context.SaveChanges();
+            if (!_context.Majors.Any(p => p.MajorId == obj.MajorId))
+            {
+                _context.Majors.Add(obj);
+                return _context.SaveChanges();
+            }
+
+            return -1;
         }
         public List<Major> GetMajors(int index, int size)
         {
