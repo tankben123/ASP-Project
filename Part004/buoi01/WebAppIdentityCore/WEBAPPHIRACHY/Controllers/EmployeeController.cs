@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using WebApp.Models;
 
 namespace WebApp.Controllers
@@ -33,6 +35,33 @@ namespace WebApp.Controllers
                 }
             }
             return View();
+        }
+
+        public IActionResult Network()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Network(List<int> ids)
+        {
+            IEnumerable<Employee> list = repository.GetEmployees(ids);
+            IEnumerable<Employee> childen = repository.GetEmployeeByParent(ids);
+
+            Dictionary<int, Node> dict = new Dictionary<int, Node>();
+            foreach (Employee item in list)
+            {
+                dict[item.EmployeeId] = new Node
+                {
+                    Id = item.EmployeeId,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Email = item.Email,
+                    Gender = item.Gender ? "Male" : "Female",
+                    Phone = item.Phone
+                };
+            }
+            return Json(dict.Values.ToList());
         }
     }
 }

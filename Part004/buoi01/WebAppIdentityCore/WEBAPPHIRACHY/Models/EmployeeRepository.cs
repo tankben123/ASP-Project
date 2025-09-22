@@ -2,6 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
+using NuGet.Packaging.Signing;
 using System.Data;
 
 namespace WebApp.Models
@@ -58,6 +59,24 @@ namespace WebApp.Models
                     Phone = obj.Phone
                 }, commandType: CommandType.StoredProcedure);
             }
+        }
+
+        public IEnumerable<Employee> GetEmployees(List<int> ids)
+        {
+            string sql = "select * from employee where employeeid in @Ids";
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Employee>(sql, new { Ids = ids });
+            }
+        }
+
+        public IEnumerable<Employee> GetEmployeeByParent(List<int> ids)
+        {
+            string sql = "SELECT relation.leftemployee AS parentid, Employee.* FROM employee JOIN relation ON employee.employeeid = relation.rightemployee AND relation.leftemployee IN @Ids";
+            using (IDbConnection connection = new SqlConnection(connectionString))
+            {
+                return connection.Query<Employee>(sql, new { Ids = ids });
+            }    
         }
     }
 }

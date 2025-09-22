@@ -30,4 +30,4 @@ app.MapDefaultControllerRoute();
 app.Run();
 
 
-//đang tới 25p:07s video 1 phần 4
+//đang tới 05p:39s video 1 phần 4

@@ -1,0 +1,124 @@
+﻿<!-- Styles -->
+<style>
+    #chartdiv {
+      width: 100%;
+      height: 550px;
+    }
+</style>
+
+<!-- Resources -->
+@section Scripts
+{
+    <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/hierarchy.js"></script>
+    <script src="https://cdn.amcharts.com/lib/5/themes/Animated.js"></script>
+
+    <!-- Chart code -->
+    <script>
+        am5.ready(function() {
+
+        // Create root element
+        // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+        var root = am5.Root.new("chartdiv");
+
+        // Set themes
+        // https://www.amcharts.com/docs/v5/concepts/themes/
+        root.setThemes([
+          am5themes_Animated.new(root)
+        ]);
+
+        var data = {
+          name: "Root",
+          value: 0,
+          // children: [
+          //   {
+          //     name: "A",
+          //     value: 6,
+          //     linkWith: ["C", "M", "L", "Q"],
+          //   },
+          //   {
+          //     name: "B",
+          //     value: 6,
+          //     linkWith: ["C", "D", "N", "E"],
+          //   },
+          //   {
+          //     name: "C",
+          //     linkWith: ["A", "B"],
+          //   },
+          //   {
+          //     name: "N",
+          //     linkWith: ["A", "B"],
+          //   },
+          //   {
+          //     name: "D",
+          //     linkWith: ["B"],
+          //   },
+          //   {
+          //     name: "E",
+          //     linkWith: ["B"],
+          //   },
+          //   {
+          //     name: "Q",
+          //     linkWith: ["A"],
+          //   },
+          //   {
+          //     name: "M",
+          //     linkWith: ["A"],
+          //   },
+          // ]
+        };
+
+        // Create wrapper container
+        var container = root.container.children.push(
+          am5.Container.new(root, {
+            width: am5.percent(100),
+            height: am5.percent(100),
+            layout: root.verticalLayout
+          })
+        );
+
+        // Create series
+        // https://www.amcharts.com/docs/v5/charts/hierarchy/#Adding
+        var series = container.children.push(
+          am5hierarchy.ForceDirected.new(root, {
+            singleBranchOnly: false,
+            downDepth: 1,
+            topDepth: 1,
+            maxRadius: 25,
+            minRadius: 12,
+            valueField: "value",
+            categoryField: "firstName",
+            childDataField: "children",
+            idField: "id",
+            linkWithStrength: 0.3,
+            linkWithField: "linkWith",
+            manyBodyStrength: -15,
+            centerStrength: 0.5
+          })
+        );
+
+        series.get("colors").set("step", 2);
+
+        series.data.setAll([data]);
+        series.set("selectedDataItem", series.dataItems[0]);
+
+        // Make stuff animate on load
+        series.appear(1000, 100);
+
+
+        $.post("/employee/network", {ids:[1, 2]}, (d)=> {
+            console.log(d);
+            data["children"] = d;
+            series.data.setAll([data]);
+            series.set("selectedDataItem", series.dataItems[0]);
+
+            // Make stuff animate on load
+            series.appear(1000, 100);
+        });
+
+        }); // end am5.ready()
+    </script>
+}
+
+<!-- HTML -->
+<div id="chartdiv"></div>
