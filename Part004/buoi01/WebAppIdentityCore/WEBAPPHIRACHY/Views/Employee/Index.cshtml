@@ -3,26 +3,35 @@
 <a href="/employee/add">Add</a>
 <a href="/employee/network">Network</a>
 
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>EmployeeId</th>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>Email</th>
-            <th>Gender</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var employee in Model)
-        {
+<form action="/employee/network">
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@employee.EmployeeId</td>
-                <td>@employee.FirstName</td>
-                <td>@employee.LastName</td> 
-                <td>@employee.Email</td>
-                <td>@employee.Gender</td>
+                <th>EmployeeId</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Checked</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var employee in Model) 
+            {
+                <tr>
+                    <td>@employee.EmployeeId</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.Gender</td>
+                    <td>
+                        <input type="checkbox" name="ids" value="@employee.EmployeeId"></input>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="text-center">
+        <button class="btn btn-primary">View</button>
+    </div>
+</form>

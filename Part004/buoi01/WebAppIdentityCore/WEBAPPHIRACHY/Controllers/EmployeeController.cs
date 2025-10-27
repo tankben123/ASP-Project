@@ -37,13 +37,13 @@ namespace WebApp.Controllers
             return View();
         }
 
-        public IActionResult Network()
+        public IActionResult Network(List<int> ids)
         {
-            return View();
+            return View(ids);
         }
 
-        [HttpPost]
-        public IActionResult Network(List<int> ids)
+        [HttpPost("/employee/network")]
+        public IActionResult LoadNetwork(List<int> ids)
         {
             IEnumerable<Employee> list = repository.GetEmployees(ids);
             IEnumerable<Employee> childen = repository.GetEmployeeByParent(ids);
@@ -57,9 +57,31 @@ namespace WebApp.Controllers
                     FirstName = item.FirstName,
                     LastName = item.LastName,
                     Email = item.Email,
+                    Value = 15,
+                    Gender = item.Gender ? "Male" : "Female",
+                    Phone = item.Phone,
+                    LinkWith = new List<int>()
+                };
+            }
+
+            foreach (var item in childen)
+            {
+                Node node = new Node
+                {
+                    Id = item.EmployeeId,
+                    FirstName = item.FirstName,
+                    LastName = item.LastName,
+                    Email = item.Email,
+                    Value = 5,
                     Gender = item.Gender ? "Male" : "Female",
                     Phone = item.Phone
                 };
+
+                if (!dict.ContainsKey(node.Id))
+                    dict[node.Id] = node;    
+
+                if (item.ParentId != null)
+                    dict[item.ParentId.Value].LinkWith.Add(node.Id);
             }
             return Json(dict.Values.ToList());
         }

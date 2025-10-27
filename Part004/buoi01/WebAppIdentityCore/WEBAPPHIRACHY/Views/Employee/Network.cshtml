@@ -1,4 +1,5 @@
 ﻿<!-- Styles -->
+@model List<int>
 <style>
     #chartdiv {
       width: 100%;
@@ -106,9 +107,38 @@
         series.appear(1000, 100);
 
 
-        $.post("/employee/network", {ids:[1, 2]}, (d)=> {
+        $.post("/employee/network", {ids:@System.Text.Json.JsonSerializer.Serialize(Model)}, (d)=> {
             console.log(d);
             data["children"] = d;
+            series.nodes.template.set("tooltipText", "Name: {firstName} {lastName}\nEmail: {email}\nPhone: {phone}");
+            series.nodes.template.events.on('click', function(ev) {
+                var o = ev.target.dataItem.dataContext;
+                $('#rs').html(`<table>
+                    <tbody>
+                        <tr>
+                            <th>First Name</th>
+                            <td>${o.firstName}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Last Name</th>
+                            <td>${o.lastName}</td>
+                        </tr>
+
+                        <tr>
+                            <th>email</th>
+                            <td>${o.email}</td>
+                        </tr>
+
+                        <tr>
+                            <th>Phone</th>
+                            <td>${o.phone}</td>
+                        </tr>
+
+                    </tbody>
+                </table>`);
+                $('#exampleModal').modal('show');
+            });
             series.data.setAll([data]);
             series.set("selectedDataItem", series.dataItems[0]);
 
@@ -122,3 +152,20 @@
 
 <!-- HTML -->
 <div id="chartdiv"></div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="rs">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

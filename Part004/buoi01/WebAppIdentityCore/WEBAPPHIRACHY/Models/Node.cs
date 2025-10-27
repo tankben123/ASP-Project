@@ -1,4 +1,5 @@
-﻿namespace WebApp.Models
+﻿
+namespace WebApp.Models
 {
     public class Node
     {
@@ -10,8 +11,9 @@
 
         public int Value { get; set; }
 
-        public List<string> LinkWith { get; set; }
+        public List<int> LinkWith { get; set; }
 
         public string Phone { get; set; }
+
     }
 }
